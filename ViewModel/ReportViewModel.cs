@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace C969_Scheduler_WPF.Model
+namespace C969_Scheduler_WPF.ViewModel
 {
-    class ReportModel
+    class ReportViewModel
     {
     }
 }
