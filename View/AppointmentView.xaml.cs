@@ -22,7 +22,7 @@ namespace C969_Scheduler_WPF
     {
         public AppointmentPage()
         {
-            InitializeComponent();
+            // InitializeComponent();
         }
     }
 }
