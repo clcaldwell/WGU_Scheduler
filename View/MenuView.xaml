@@ -8,7 +8,33 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MenuPage">
 
-    <Grid>
-        
+    <Grid Background="WhiteSmoke">
+        <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
+            </Border.Effect>
+        </Border>
+        <StackPanel Margin="-20,20,0,-20">
+            <TextBlock Text="Scheduling Menu" FontSize="30" FontWeight="Bold" Width="291" Height="43"/>
+        </StackPanel>
+        <Button Name="customerButton" Width="100" Height="100" HorizontalAlignment="Left" Margin="160,175,0,175">
+            <StackPanel Orientation="Horizontal">
+                <!-- <Image Source="Resources/Icons/CustomerIcon.png" Width="20" Height="20"/> -->
+                <TextBlock Text="Customers" />
+            </StackPanel>
+        </Button>
+        <Button Name="appointmentsButton" Width="100" Height="100" HorizontalAlignment="Left" Margin="340,175,0,175">
+            <StackPanel Orientation="Horizontal">
+                <!-- <Image Source="Resources/Icons/AppointmentIcon.png" Width="20" Height="20"/> -->
+                <TextBlock Text="Appointments" />
+            </StackPanel>
+        </Button>
+        <Button Name="reportsButton" Width="100" Height="100" HorizontalAlignment="Left" Margin="524,175,0,175">
+            <StackPanel Orientation="Horizontal">
+                <!-- <Image Source="Resources/Icons/ReportIcon.png" Width="20" Height="20"/> -->
+                <TextBlock Text="Reports" />
+            </StackPanel>
+        </Button>
+        <Button Name="exitButton" Content="Exit" Height="30" Width="50" Margin="732,401,18,19" Background="LightSalmon"/>
     </Grid>
 </Page>
