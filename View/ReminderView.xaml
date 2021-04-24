@@ -8,7 +8,15 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ReminderPage">
 
-    <Grid>
-        
+    <Grid Background="WhiteSmoke">
+        <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
+            </Border.Effect>
+        </Border>
+        <StackPanel Margin="0,0,0,-20">
+            <TextBlock Text="Appointment Reminder" FontSize="30" FontWeight="Bold" Margin="20 20 0 20"/>
+        </StackPanel>
+        <Button Name="okButton" Content="OK" Height="30" Width="50" Margin="732,401,18,19"/>
     </Grid>
 </Page>
