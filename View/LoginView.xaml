@@ -8,7 +8,23 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LoginPage">
 
-    <Grid>
-        
+    <Grid Background="WhiteSmoke">
+        <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
+            </Border.Effect>
+        </Border>
+        <StackPanel Margin="-20,20,0,-20">
+            <TextBlock Text="Scheduling Login" FontSize="30" FontWeight="Bold" Width="291" Height="43"/>
+        </StackPanel>
+        <StackPanel Margin="100,150,100,100">
+            <TextBlock Text="UserName" HorizontalAlignment="Center"/>
+            <TextBox Name="userNameBox" Width="200" HorizontalAlignment="Center" Height="20" />
+            <TextBox Width="0" HorizontalAlignment="Center" Height="20" Visibility="Hidden" />
+            <TextBlock Text="Password" HorizontalAlignment="Center"/>
+            <PasswordBox Name="passwordBox" Width="200" HorizontalAlignment="Center" Height="20"/>
+        </StackPanel>
+        <Button Name="loginButton" Content="Login" Height="30" Width="50" Margin="677,401,73,19" Background="LightGreen"/>
+        <Button Name="exitButton" Content="Exit" Height="30" Width="50" Margin="732,401,18,19" Background="LightSalmon"/>
     </Grid>
 </Page>
