@@ -8,7 +8,26 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ReportPage">
 
-    <Grid>
-        
+    <Grid Background="WhiteSmoke">
+        <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
+            </Border.Effect>
+            <StackPanel Margin="0,0,0,-20">
+                <TextBlock Text="Reports" FontSize="30" FontWeight="Bold" Margin="0 0 0 20"/>
+            </StackPanel>
+        </Border>
+        <StackPanel Margin="40,100,40,40" HorizontalAlignment="Left">
+            <ListBox Name="reportsListBox">
+                <ListBoxItem>Report #1</ListBoxItem>
+                <ListBoxItem>Report #2</ListBoxItem>
+                <ListBoxItem>Report #3</ListBoxItem>
+            </ListBox>
+            <TextBlock Visibility="Hidden"/>
+            <Button Name="generateButton" Content="Generate"/>
+        </StackPanel>
+        <RichTextBox Name="reportTextBox" Background="AliceBlue" Height="250" Width="400"/>
+        <Button Name="menuButton" Content="Menu" Height="30" Width="50" Margin="677,401,73,19" Background="LightGreen"/>
+        <Button Name="exitButton" Content="Exit" Height="30" Width="50" Margin="732,401,18,19" Background="LightSalmon"/>
     </Grid>
 </Page>
