@@ -8,7 +8,28 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AppointmentPage">
 
-    <Grid>
-        
+    <Grid Background="WhiteSmoke">
+        <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
+            </Border.Effect>
+            <StackPanel>
+                <TextBlock Text="Appointments" FontSize="30" FontWeight="Bold" Margin="0 0 0 20"/>
+                <SelectiveScrollingGrid Height="164" Background="AliceBlue" Width="713"/>
+
+                <Grid Margin="0 0 0 20"/>
+                <TextBox Name="customerBox" Text="Customer: " Width="200" HorizontalAlignment="Left" Height="20" />
+                <TextBox Name="customerTypeBox" Text="Type: " Width="200" HorizontalAlignment="Left" Height="20"/>
+                <DatePickerTextBox Name="startDatePicker" Text="Start: " Width="200" HorizontalAlignment="Left" Height="20"/>
+                <DatePickerTextBox Name="endDatePicker" Text="End: " Width="200" HorizontalAlignment="Left" Height="20"/>
+            </StackPanel>
+        </Border>
+        <Button Name ="addButton" Content="Add" HorizontalAlignment="Left" Margin="628,267,0,163" Width="40"/>
+        <Button Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="673,267,0,163" Width="40"/>
+        <Button Name="deleteButton" Content="Delete" HorizontalAlignment="Left" Margin="718,267,0,163" Width="40"/>
+        <Button Name="saveButton" Content="Save" Width="40" Height="25" Margin="90,370,670,55" Visibility="Hidden"/>
+        <Button Name="cancelButton" Content="Cancel" Width="40" Height="25" Margin="135,370,625,55" Visibility="Hidden"/>
+        <Button Name="menuButton" Content="Menu" Height="30" Width="50" Margin="677,401,73,19" Background="LightGreen"/>
+        <Button Name="exitButton" Content="Exit" Height="30" Width="50" Margin="732,401,18,19" Background="LightSalmon"/>
     </Grid>
 </Page>
