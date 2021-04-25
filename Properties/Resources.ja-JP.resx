@@ -123,6 +123,12 @@
   <data name="Login" xml:space="preserve">
     <value>ログイン</value>
   </data>
+  <data name="MessageEmptyPassword" xml:space="preserve">
+    <value>パスワードを入力する必要があります</value>
+  </data>
+  <data name="MessageEmptyUserName" xml:space="preserve">
+    <value>ユーザー名を入力する必要があります</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>パスワード</value>
   </data>

@@ -123,6 +123,12 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="MessageEmptyPassword" xml:space="preserve">
+    <value>You must enter a Password</value>
+  </data>
+  <data name="MessageEmptyUserName" xml:space="preserve">
+    <value>You must enter a UserName</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>

@@ -79,6 +79,24 @@ namespace Scheduler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must enter a Password.
+        /// </summary>
+        public static string MessageEmptyPassword {
+            get {
+                return ResourceManager.GetString("MessageEmptyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must enter a UserName.
+        /// </summary>
+        public static string MessageEmptyUserName {
+            get {
+                return ResourceManager.GetString("MessageEmptyUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string Password {

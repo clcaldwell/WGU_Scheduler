@@ -15,10 +15,10 @@
         <TextBlock Text="{x:Static p:Resources.Title}" FontSize="30" FontWeight="Bold" Width="291" Margin="66,10,42,379"/>
         <StackPanel Margin="27,76,27,234">
             <TextBlock Name="userNameText" Text="{x:Static p:Resources.UserName}" HorizontalAlignment="Center"/>
-            <TextBox Name="userNameBox" Width="175" HorizontalAlignment="Center" Height="20" />
+            <TextBox Name="userNameBox" Text="{Binding UserName}" Width="175" HorizontalAlignment="Center" Height="20" />
             <TextBox Width="0" HorizontalAlignment="Center" Height="20" Visibility="Hidden" />
             <TextBlock Name="passwordText" Text="{x:Static p:Resources.Password}" HorizontalAlignment="Center"/>
-            <PasswordBox Name="passwordBox" Width="175" HorizontalAlignment="Center" Height="20"/>
+            <TextBox Name="passwordBox" Text="{Binding Password}" Width="175" HorizontalAlignment="Center" Height="20"/>
         </StackPanel>
         <Button Name="loginButton" Content="{x:Static p:Resources.Login}" Height="30" Width="50" Margin="170,204,160,175" Background="LightGreen"
                 Command="{Binding LoginCommand}"/>
