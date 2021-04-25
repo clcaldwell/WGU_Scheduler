@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace C969_Scheduler_WPF
+namespace Scheduler
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 // If you have enabled NRTs for your project, then un-comment the following line:
 // #nullable disable
 
-namespace C969_Scheduler_WPF.Model.DBEntities
+namespace Scheduler.Model.DBEntities
 {
     public partial class Customer
     {

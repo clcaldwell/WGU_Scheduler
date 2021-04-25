@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace C969_Scheduler_WPF
+namespace Scheduler
 {
     /// <summary>
     /// Interaction logic for ReminderPage.xaml

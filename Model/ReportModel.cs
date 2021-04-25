@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace C969_Scheduler_WPF.Model
+namespace Scheduler.Model
 {
     class ReportModel
     {

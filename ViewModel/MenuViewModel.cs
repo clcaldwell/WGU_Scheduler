@@ -1,4 +1,4 @@
-﻿namespace C969_Scheduler_WPF.ViewModel
+﻿namespace Scheduler.ViewModel
 {
     class MenuViewModel
     {

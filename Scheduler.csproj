@@ -4,6 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Authors>Coby Caldwell</Authors>
+    <Company>Western Governors University</Company>
+    <Product>C969 Project</Product>
   </PropertyGroup>
 
   <ItemGroup>
