@@ -1,12 +1,14 @@
-﻿<Page x:Class="Scheduler.CustomerPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Scheduler"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="CustomerPage">
+<UserControl
+    x:Class="Scheduler.View.CustomerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Scheduler"
+    xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
+    mc:Ignorable="d"
+    d:DesignHeight="450"
+    d:DesignWidth="800">
 
     <Grid Background="WhiteSmoke">
         <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
@@ -14,10 +16,8 @@
                 <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
             </Border.Effect>
             <StackPanel Margin="0,0,0,-20">
-                <TextBlock Text="Customers" FontSize="30" FontWeight="Bold" Margin="0 0 0 20"/>
+                <TextBlock Text="Customers" FontSize="30" FontWeight="Bold" Margin="0,0,0,20"/>
                 <SelectiveScrollingGrid Height="164" Background="AliceBlue" Width="713"/>
-
-                <Grid Margin="0 0 0 20"/>
                 <TextBox Name="nameBox" Text="Name: " Width="200" HorizontalAlignment="Left" Height="20" />
                 <TextBox Name="addressBox" Text="Address: " Width="200" HorizontalAlignment="Left" Height="20"/>
                 <TextBox Name="cityBox" Text="City: " Width="200" HorizontalAlignment="Left" Height="20"/>
@@ -26,7 +26,7 @@
                 <TextBox Name="phoneBox" Text="Phone: " Width="200" HorizontalAlignment="Left" Height="20"/>
             </StackPanel>
         </Border>
-        <Button Name ="addButton" Content="Add" HorizontalAlignment="Left" Margin="628,267,0,163" Width="40"/>
+        <Button Name="addButton" Content="Add" HorizontalAlignment="Left" Margin="628,267,0,163" Width="40"/>
         <Button Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="673,267,0,163" Width="40"/>
         <Button Name="deleteButton" Content="Delete" HorizontalAlignment="Left" Margin="718,267,0,163" Width="40"/>
         <Button Name="saveButton" Content="Save" Width="40" Height="25" Margin="102,406,658,19" Visibility="Hidden"/>
@@ -34,4 +34,4 @@
         <Button Name="menuButton" Content="Menu" Height="30" Width="50" Margin="677,401,73,19" Background="LightGreen"/>
         <Button Name="exitButton" Content="Exit" Height="30" Width="50" Margin="732,401,18,19" Background="LightSalmon"/>
     </Grid>
-</Page>
+</UserControl>

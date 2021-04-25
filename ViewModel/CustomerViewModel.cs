@@ -1,6 +1,6 @@
 ﻿namespace Scheduler.ViewModel
 {
-    class CustomerViewModel
+    public class CustomerViewModel : BindBase
     {
     }
 }

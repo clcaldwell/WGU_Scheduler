@@ -1,6 +1,6 @@
-﻿namespace Scheduler.ViewModel
+namespace Scheduler.ViewModel
 {
-    class ReminderViewModel
+    public class ReminderViewModel : BindBase
     {
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Scheduler.ViewModel
+namespace Scheduler.ViewModel
 {
-    class MenuViewModel
+    public class MenuViewModel : BindBase
     {
     }
 }

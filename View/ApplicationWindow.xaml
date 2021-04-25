@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:Scheduler"
         xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
         xmlns:View="clr-namespace:Scheduler.View" 
-        d:DataContext="{d:DesignInstance Type=ViewModel:ApplicationWindowViewModel}"
         mc:Ignorable="d"
         Title="ApplicationWindow" Height="450" Width="800">
     

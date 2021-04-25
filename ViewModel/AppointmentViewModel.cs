@@ -1,6 +1,14 @@
-﻿namespace Scheduler.ViewModel
+﻿using System.Windows.Input;
+
+namespace Scheduler.ViewModel
 {
-    class AppointmentViewModel
+    public class AppointmentViewModel : BindBase
     {
+        public ICommand MenuButton_Click
+        {
+            get; set;
+        }
+
+        
     }
 }

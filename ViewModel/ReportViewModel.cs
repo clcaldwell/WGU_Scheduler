@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Scheduler.ViewModel
+﻿namespace Scheduler.ViewModel
 {
-    class ReportViewModel
+    public class ReportViewModel : BindBase
     {
     }
 }
