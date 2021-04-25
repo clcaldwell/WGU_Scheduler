@@ -32,5 +32,6 @@ namespace Scheduler.ViewModel
             loginWindow.Close();
             AppWindow.Focus();
         }
+
     }
 }
