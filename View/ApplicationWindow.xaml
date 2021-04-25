@@ -7,7 +7,9 @@
         xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
         xmlns:View="clr-namespace:Scheduler.View" 
         mc:Ignorable="d"
-        Title="ApplicationWindow" Height="450" Width="800">
+        Title="Scheduler"
+        Height="550"
+        Width="900">
     
     <Window.Resources>
         <DataTemplate DataType="{x:Type ViewModel:MenuViewModel}">
@@ -25,7 +27,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid x:Name="NavBar">
