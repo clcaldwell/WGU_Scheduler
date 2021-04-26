@@ -30,10 +30,10 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.ja-JP.resx">
-      <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.ja-JP.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties_old\Resources.en.resx">
+    <EmbeddedResource Update="Properties\Resources.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
     </EmbeddedResource>

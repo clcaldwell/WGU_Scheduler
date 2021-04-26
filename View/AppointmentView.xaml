@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Scheduler"
     xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
+    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
@@ -17,13 +18,12 @@
             </Border.Effect>
             <StackPanel>
                 <TextBlock Text="Appointments" FontSize="30" FontWeight="Bold" Margin="0,0,0,20"/>
-                <SelectiveScrollingGrid Height="164" Background="AliceBlue" Width="713"/>
-
+                <DataGrid Name="AppointmentsDataGrid" Height="99" Background="AliceBlue" ItemsSource="{Binding AllAppointments}" IsReadOnly="False" CanUserAddRows="False"/>
                 <Grid Margin="0,0,0,20"/>
-                <TextBox Name="customerBox" Text="Customer: " Width="200" HorizontalAlignment="Left" Height="20" />
-                <TextBox Name="customerTypeBox" Text="Type: " Width="200" HorizontalAlignment="Left" Height="20"/>
-                <DatePickerTextBox Name="startDatePicker" Text="Start: " Width="200" HorizontalAlignment="Left" Height="20"/>
-                <DatePickerTextBox Name="endDatePicker" Text="End: " Width="200" HorizontalAlignment="Left" Height="20"/>
+                <TextBox Name="customerBox" Text="Customer: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
+                <TextBox Name="customerTypeBox" Text="Type: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
+                <xctk:DateTimeUpDown Name="startDatePicker" Text="Start: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
+                <xctk:DateTimeUpDown Name="endDatePicker" Text="End: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
             </StackPanel>
         </Border>
         <Button Name="addButton" Content="Add" HorizontalAlignment="Left" Margin="628,267,0,163" Width="40"/>
