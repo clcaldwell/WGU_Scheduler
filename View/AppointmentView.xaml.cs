@@ -11,5 +11,10 @@ namespace Scheduler.View
             this.DataContext = new AppointmentViewModel();
             InitializeComponent();
         }
+
+        private void customerBox_TargetUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+
+        }
     }
 }

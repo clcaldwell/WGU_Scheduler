@@ -1,6 +1,6 @@
 ﻿namespace Scheduler.ViewModel
 {
-    public class ReportViewModel : BindBase
+    public class ReportViewModel : ViewModelBase
     {
     }
 }

@@ -8,7 +8,7 @@ using Scheduler.View;
 
 namespace Scheduler.ViewModel
 {
-    public class LoginWindowViewModel : BindBase
+    public class LoginWindowViewModel : ViewModelBase
     {
         private Window loginWindow;
         private string _UserName;

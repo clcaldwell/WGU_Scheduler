@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Scheduler
 {
-    public class BindBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 

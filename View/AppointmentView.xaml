@@ -4,12 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Scheduler"
     xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
     xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:CallMethodAction TargetObject="{Binding}" MethodName="LoadAppointments"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Grid Background="WhiteSmoke">
         <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
@@ -18,16 +24,19 @@
             </Border.Effect>
             <StackPanel>
                 <TextBlock Text="Appointments" FontSize="30" FontWeight="Bold" Margin="0,0,0,20"/>
-                <DataGrid Name="AppointmentsDataGrid" Height="99" Background="AliceBlue" ItemsSource="{Binding AllAppointments}" IsReadOnly="False" CanUserAddRows="False"/>
+                <DataGrid Name="AppointmentsDataGrid"
+                          Height="99" Background="AliceBlue"
+                          ItemsSource="{Binding AllAppointmentsLoaded}"
+                          CurrentItem="{Binding SelectedAppointment, Mode=OneWayToSource}"/>
                 <Grid Margin="0,0,0,20"/>
-                <TextBox Name="customerBox" Text="Customer: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
-                <TextBox Name="customerTypeBox" Text="Type: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
-                <xctk:DateTimeUpDown Name="startDatePicker" Text="Start: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
-                <xctk:DateTimeUpDown Name="endDatePicker" Text="End: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
+                <TextBox Name="customerBox" Text="{Binding SelectedAppointment.CustomerId, Mode=TwoWay}" Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1" IsEnabled="False"/>
+                <TextBox Name="customerTypeBox" Text="{Binding SelectedAppointment.Type, Mode=TwoWay}" Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1" IsEnabled="False"/>
+                <xctk:DateTimeUpDown Name="startDatePicker" Text="Start: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1" IsEnabled="False"/>
+                <xctk:DateTimeUpDown Name="endDatePicker" Text="End: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1" IsEnabled="False"/>
             </StackPanel>
         </Border>
         <Button Name="addButton" Content="Add" HorizontalAlignment="Left" Margin="628,267,0,163" Width="40"/>
-        <Button Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="673,267,0,163" Width="40"/>
+        <Button Name="editButton" Content="Edit" Command="{Binding EditAppointmentCommand}" CommandParameter="{Binding}" HorizontalAlignment="Left" Margin="673,267,0,163" Width="40"/>
         <Button Name="deleteButton" Content="Delete" HorizontalAlignment="Left" Margin="718,267,0,163" Width="40"/>
         <Button Name="saveButton" Content="Save" Width="40" Height="25" Margin="90,370,670,55" Visibility="Hidden"/>
         <Button Name="cancelButton" Content="Cancel" Width="40" Height="25" Margin="135,370,625,55" Visibility="Hidden"/>

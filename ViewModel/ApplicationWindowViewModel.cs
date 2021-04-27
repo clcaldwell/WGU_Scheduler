@@ -3,7 +3,7 @@
 namespace Scheduler.ViewModel
 {
 
-    public class ApplicationWindowViewModel : BindBase
+    public class ApplicationWindowViewModel : ViewModelBase
     {
         private MenuViewModel _menuViewModel = new MenuViewModel();
         private AppointmentViewModel _appointmentViewModel = new AppointmentViewModel();
@@ -15,8 +15,8 @@ namespace Scheduler.ViewModel
             NavCommand = new RelayCommand<string>(OnNav);
         }
 
-        private BindBase _CurrentViewModel;
-        public BindBase CurrentViewModel {
+        private ViewModelBase _CurrentViewModel;
+        public ViewModelBase CurrentViewModel {
             get { return _CurrentViewModel; }
             set { SetProperty(ref _CurrentViewModel, value); }
         }
