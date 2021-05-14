@@ -6,15 +6,13 @@
         xmlns:local="clr-namespace:Scheduler"
         xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
         xmlns:View="clr-namespace:Scheduler.View" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Scheduler"
-        Height="550"
-        Width="900">
-    
+        Height="575"
+        Width="1025">
+
     <Window.Resources>
-        <DataTemplate DataType="{x:Type ViewModel:MenuViewModel}">
-            <View:MenuView/>
-        </DataTemplate>
         <DataTemplate DataType="{x:Type ViewModel:AppointmentViewModel}">
             <View:AppointmentView/>
         </DataTemplate>

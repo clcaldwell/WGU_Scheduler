@@ -16,12 +16,22 @@ namespace Scheduler.ViewModel
         public AppointmentViewModel()
         {
             EditAppointmentCommand = new RelayCommand<Appointment>(OnEditButton);
+            SaveAppointmentCommand = new RelayCommand<Appointment>(OnSaveButton);
         }
 
         private void OnEditButton(Appointment appointment)
         {
             MessageBox.Show(SelectedAppointment.AppointmentId.ToString());
         }
+
+        private void OnSaveButton(Appointment appointment)
+        {
+            var context = new DBContext();
+            context.Update(appointment);
+            context.SaveChanges();
+        }
+
+
 
         public List<Appointment> AllAppointments
         {
@@ -53,6 +63,7 @@ namespace Scheduler.ViewModel
 
         public RelayCommand<string> GetAppointmentsCommand { get; private set; }
         public RelayCommand<Appointment> EditAppointmentCommand { get; private set; }
+        public RelayCommand<Appointment> SaveAppointmentCommand { get; private set; }
 
         private Appointment _selectedappointment;
         public Appointment SelectedAppointment
@@ -67,11 +78,5 @@ namespace Scheduler.ViewModel
                 }
             }
         }
-
-                //<TextBox Name = "customerBox" Text="Customer: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
-                //<TextBox Name = "customerTypeBox" Text="Type: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
-                //<xctk:DateTimeUpDown Name = "startDatePicker" Text="Start: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
-                //<xctk:DateTimeUpDown Name = "endDatePicker" Text="End: " Width="200" HorizontalAlignment="Left" Height="20" BorderBrush="AliceBlue" BorderThickness="1"/>
-
     }
 }

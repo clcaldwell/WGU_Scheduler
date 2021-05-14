@@ -5,7 +5,6 @@ namespace Scheduler.ViewModel
 
     public class ApplicationWindowViewModel : ViewModelBase
     {
-        private MenuViewModel _menuViewModel = new MenuViewModel();
         private AppointmentViewModel _appointmentViewModel = new AppointmentViewModel();
         private CustomerViewModel _customerViewModel = new CustomerViewModel();
         private ReportViewModel _reportViewModel = new ReportViewModel();
@@ -27,22 +26,17 @@ namespace Scheduler.ViewModel
         {
             switch (destination)
             {
-                case "Menu":
-                    CurrentViewModel = _menuViewModel;
-                    break;
                 case "Appointment":
                     CurrentViewModel = _appointmentViewModel;
                     break;
                 case "Customer":
-                    CurrentViewModel = _CurrentViewModel;
+                    CurrentViewModel = _customerViewModel;
                     break;
                 case "Report":
                     CurrentViewModel = _reportViewModel;
                     break;
-                default:
-                    CurrentViewModel = _menuViewModel;
-                    break;
             }
         }
+
     }
 }

@@ -4,32 +4,57 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Scheduler"
     xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
+    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
     mc:Ignorable="d"
-    d:DesignHeight="450"
-    d:DesignWidth="800">
-
+    d:DesignWidth="1000" Height="550">
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="BorderBrush" Value="AliceBlue" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+    </UserControl.Resources>
+    
     <Grid Background="WhiteSmoke">
-        <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
-            </Border.Effect>
-            <StackPanel Margin="0,0,0,-20">
-                <TextBlock Text="Reports" FontSize="30" FontWeight="Bold" Margin="0,0,0,20"/>
-            </StackPanel>
-        </Border>
-        <StackPanel Margin="40,100,40,40" HorizontalAlignment="Left">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="15"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="2">
+            <TextBlock Text="Reports" FontSize="30" FontWeight="Bold" Margin="5"/>
+            <RichTextBox Name="reportTextBox"
+                Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
+                Height="200" Background="AliceBlue" Margin="10"
+            />
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Margin="10">
             <ListBox Name="reportsListBox">
-                <ListBoxItem>Report #1</ListBoxItem>
-                <ListBoxItem>Report #2</ListBoxItem>
+                <ListBoxItem>Number of Appt Types by Month</ListBoxItem>
+                <ListBoxItem>Per Consultant Schedule</ListBoxItem>
                 <ListBoxItem>Report #3</ListBoxItem>
             </ListBox>
             <TextBlock Visibility="Hidden"/>
             <Button Name="generateButton" Content="Generate"/>
         </StackPanel>
-        <RichTextBox Name="reportTextBox" Background="AliceBlue" Height="250" Width="400"/>
-        <Button Name="menuButton" Content="Menu" Height="30" Width="50" Margin="677,401,73,19" Background="LightGreen"/>
-        <Button Name="exitButton" Content="Exit" Height="30" Width="50" Margin="732,401,18,19" Background="LightSalmon"/>
     </Grid>
 </UserControl>

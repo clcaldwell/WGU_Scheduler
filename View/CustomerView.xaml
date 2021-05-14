@@ -4,34 +4,94 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Scheduler"
     xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
+    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
     mc:Ignorable="d"
-    d:DesignHeight="450"
-    d:DesignWidth="800">
+    d:DesignWidth="1000" Height="550">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:CallMethodAction TargetObject="{Binding}" MethodName="LoadCustomers"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="BorderBrush" Value="AliceBlue" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+    </UserControl.Resources>
 
     <Grid Background="WhiteSmoke">
-        <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
-            </Border.Effect>
-            <StackPanel Margin="0,0,0,-20">
-                <TextBlock Text="Customers" FontSize="30" FontWeight="Bold" Margin="0,0,0,20"/>
-                <SelectiveScrollingGrid Height="164" Background="AliceBlue" Width="713"/>
-                <TextBox Name="nameBox" Text="Name: " Width="200" HorizontalAlignment="Left" Height="20" />
-                <TextBox Name="addressBox" Text="Address: " Width="200" HorizontalAlignment="Left" Height="20"/>
-                <TextBox Name="cityBox" Text="City: " Width="200" HorizontalAlignment="Left" Height="20"/>
-                <TextBox Name="countryBox" Text="Country: " Width="200" HorizontalAlignment="Left" Height="20"/>
-                <TextBox Name="zipBox" Text="Zip: " Width="200" HorizontalAlignment="Left" Height="20"/>
-                <TextBox Name="phoneBox" Text="Phone: " Width="200" HorizontalAlignment="Left" Height="20"/>
-            </StackPanel>
-        </Border>
-        <Button Name="addButton" Content="Add" HorizontalAlignment="Left" Margin="628,267,0,163" Width="40"/>
-        <Button Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="673,267,0,163" Width="40"/>
-        <Button Name="deleteButton" Content="Delete" HorizontalAlignment="Left" Margin="718,267,0,163" Width="40"/>
-        <Button Name="saveButton" Content="Save" Width="40" Height="25" Margin="102,406,658,19" Visibility="Hidden"/>
-        <Button Name="cancelButton" Content="Cancel" Width="40" Height="25" Margin="147,406,613,19" Visibility="Hidden"/>
-        <Button Name="menuButton" Content="Menu" Height="30" Width="50" Margin="677,401,73,19" Background="LightGreen"/>
-        <Button Name="exitButton" Content="Exit" Height="30" Width="50" Margin="732,401,18,19" Background="LightSalmon"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="15"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="2">
+            <TextBlock Text="Customers" FontSize="30" FontWeight="Bold" Margin="5"/>
+            <DataGrid Name="CustomerssDataGrid"
+                          Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
+                          Height="200" Background="AliceBlue" Margin="5"
+                          ItemsSource="{Binding AllCustomersLoaded}"
+                          CurrentItem="{Binding CurrentAppointment, Mode=OneWayToSource}"/>
+        </StackPanel>
+        
+        <Label Content="Selected Customer" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Margin="2"/>
+        <StackPanel Grid.Column="2" Grid.Row="4">
+            <TextBox Text="Name" IsEnabled="False"/>
+            <TextBox Text="Address" IsEnabled="False"/>
+            <TextBox Text="City" IsEnabled="False"/>
+            <TextBox Text="Country" IsEnabled="False"/>
+            <TextBox Text="Zip" IsEnabled="False"/>
+            <TextBox Text="Phone" IsEnabled="False"/>
+        </StackPanel>
+        <StackPanel Grid.Column="3" Grid.Row="4">
+            <TextBox Name="nameBox" Text="{Binding SelectedCustomer.Name, Mode=TwoWay}" IsEnabled="True"/>
+            <TextBox Name="addressBox" Text="{Binding SelectedCustomer.Address, Mode=TwoWay}" IsEnabled="False"/>
+            <TextBox Name="cityBox" Text="{Binding SelectedCustomer.City, Mode=TwoWay}" IsEnabled="False"/>
+            <TextBox Name="countryBox" Text="{Binding SelectedCustomer.Country, Mode=TwoWay}" IsEnabled="False"/>
+            <TextBox Name="zipBox" Text="{Binding SelectedCustomer.Zip, Mode=TwoWay}" IsEnabled="False"/>
+            <TextBox Name="phoneBox" Text="{Binding SelectedCustomer.Phone, Mode=TwoWay}" IsEnabled="False"/>
+        </StackPanel>
+
+
+        <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="5">
+            <Button Name="saveButton" Content="Save" Command="{Binding SaveCustomerCommand}" CommandParameter="{Binding}"
+                Width="40" Height="25" Margin="5" Visibility="Visible"/>
+            <Button Name="cancelButton" Content="Cancel" 
+                Width="40" Height="25" Margin="5" Visibility="Visible"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="5" Grid.Row="3">
+            <Button Name="addButton" Content="Add" 
+                Height="30" Width="50" Margin="5"/>
+            <Button Name="editButton" Content="Edit" Command="{Binding EditCustomerCommand}" CommandParameter="{Binding}"
+                Height="30" Width="50" Margin="5"/>
+            <Button Name="deleteButton" Content="Delete" 
+                Height="30" Width="50" Margin="5"/>
+        </StackPanel>
     </Grid>
 </UserControl>
