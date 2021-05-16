@@ -12,26 +12,164 @@ namespace Scheduler.ViewModel
 {
     public class CustomerViewModel : ViewModelBase
     {
+        private List<Customer> _allcustomersloaded;
 
-        public CustomerViewModel()
+        private Customer _selectedcustomer;
+        private Address _selectedaddress;
+        private City _selectedcity;
+        private Country _selectedcountry;
+
+        private bool _addMode = false;
+
+        private bool _editMode = false;
+
+        private bool _viewMode = true;
+
+        enum Mode
         {
-            EditCustomerCommand = new RelayCommand<Customer>(OnEditButton);
-            SaveCustomerCommand = new RelayCommand<Customer>(OnSaveButton);
+            Add,
+            Edit,
+            View
+        }
+
+        private void SetMode(Mode mode)
+        {
+            if (mode == Mode.Add)
+            {
+                EditMode = true;
+                ViewMode = false;
+            }
+            if (mode == Mode.Edit)
+            {
+                EditMode = true;
+                ViewMode = false;
+            }
+            if (mode == Mode.View)
+            {
+                EditMode = false;
+                ViewMode = true;
+            }
+        }
+
+        private void OnAddButton(Customer customer)
+        {
+            SetMode(Mode.Add);
         }
 
         private void OnEditButton(Customer customer)
         {
-            MessageBox.Show(SelectedCustomer.CustomerId.ToString());
+            SetMode(Mode.Edit);
+        }
+
+        private void OnDeleteButton(Customer customer)
+        {
+            if (MessageBox.Show("Are you sure you want to delete this customer?" +
+                    "\r\n Id:" + customer.CustomerId +
+                    "\r\n Name:" + customer.CustomerName,
+                "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                var context = new DBContext();
+                context.Remove(customer);
+                context.SaveChanges();
+                SetMode(Mode.View);
+                LoadCustomers();
+            }
         }
 
         private void OnSaveButton(Customer customer)
         {
             var context = new DBContext();
-            context.Update(customer);
+            if (AddMode)
+            {
+                int NextId = AllCustomers.OrderByDescending(a => a.CustomerId).FirstOrDefault().CustomerId + 1;
+                MessageBox.Show("NextAppointmentId: " + NextId);
+
+                /*Customer NewCustomer = new Customer
+                {
+                    AppointmentId = NextId,
+                    CustomerId = appointment.CustomerId,
+                    UserId = appointment.UserId,
+                    Title = appointment.Title,
+                    Description = appointment.Description,
+                    Location = appointment.Location,
+                    Contact = appointment.Contact,
+                    Type = appointment.Type,
+                    Url = appointment.Url,
+                    Start = appointment.Start,
+                    End = appointment.End,
+                    CreateDate = appointment.CreateDate,
+                    CreatedBy = appointment.CreatedBy,
+                    LastUpdate = appointment.LastUpdate,
+                    LastUpdateBy = appointment.LastUpdateBy
+                }; 
+
+                context.Add(NewAppointment); */
+            }
+            else
+            {
+                context.Update(customer);
+                context.Update(SelectedAddress);
+                context.Update(SelectedCity);
+                context.Update(SelectedCountry);
+            }
+
             context.SaveChanges();
+            LoadCustomers();
+            SetMode(Mode.View);
         }
 
+        private void OnCancelButton(Customer customer)
+        {
+            LoadCustomers();
+            SetMode(Mode.View);
+        }
 
+        public CustomerViewModel()
+        {
+            AddCustomerCommand = new RelayCommand<Customer>(OnAddButton);
+            EditCustomerCommand = new RelayCommand<Customer>(OnEditButton);
+            DeleteCustomerCommand = new RelayCommand<Customer>(OnDeleteButton);
+
+            SaveCustomerCommand = new RelayCommand<Customer>(OnSaveButton);
+            CancelCustomerCommand = new RelayCommand<Customer>(OnCancelButton);
+        }
+
+        public RelayCommand<string> GetCustomersCommand { get; private set; }
+        public RelayCommand<Customer> AddCustomerCommand { get; private set; }
+        public RelayCommand<Customer> EditCustomerCommand { get; private set; }
+        public RelayCommand<Customer> DeleteCustomerCommand { get; private set; }
+        public RelayCommand<Customer> SaveCustomerCommand { get; private set; }
+        public RelayCommand<Customer> CancelCustomerCommand { get; private set; }
+
+        public bool AddMode
+        {
+            get { return _addMode; }
+            set
+            {
+                _viewMode = value;
+                OnPropertyChanged(nameof(AddMode));
+            }
+        }
+
+        public bool ViewMode
+        {
+            get { return _viewMode; }
+            set
+            {
+                _viewMode = value;
+                OnPropertyChanged(nameof(ViewMode));
+            }
+        }
+
+        public bool EditMode
+        {
+            get { return _editMode; }
+            set
+            {
+                _editMode = value;
+                OnPropertyChanged(nameof(EditMode));
+            }
+        }
 
         public List<Customer> AllCustomers
         {
@@ -48,7 +186,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private List<Customer> _allcustomersloaded;
         public List<Customer> AllCustomersLoaded
         {
             get { return _allcustomersloaded; }
@@ -61,11 +198,6 @@ namespace Scheduler.ViewModel
             AllCustomersLoaded = await context.Customer.ToListAsync();
         }
 
-        public RelayCommand<string> GetCustomersCommand { get; private set; }
-        public RelayCommand<Customer> EditCustomerCommand { get; private set; }
-        public RelayCommand<Customer> SaveCustomerCommand { get; private set; }
-
-        private Customer _selectedcustomer;
         public Customer SelectedCustomer
         {
             get { return _selectedcustomer; }
@@ -74,9 +206,61 @@ namespace Scheduler.ViewModel
                 if (value != null && value != _selectedcustomer)
                 {
                     SetProperty(ref _selectedcustomer, value);
-                    OnPropertyChanged("SelectedCustomer");
+
+                    var context = new DBContext();
+                    SelectedAddress = context.Address.Find(value.AddressId);
+
+                    OnPropertyChanged(nameof(SelectedCustomer));
                 }
             }
         }
+
+        public Address SelectedAddress
+        {
+            get { return _selectedaddress; }
+            set
+            {
+                if (value != null && value != _selectedaddress)
+                {
+                    SetProperty(ref _selectedaddress, value);
+
+                    var context = new DBContext();
+                    SelectedCity = context.City.Find(value.CityId);
+
+                    OnPropertyChanged(nameof(SelectedAddress));
+                }
+            }
+        }
+
+        public City SelectedCity
+        {
+            get { return _selectedcity; }
+            set
+            {
+                if (value != null && value != _selectedcity)
+                {
+                    SetProperty(ref _selectedcity, value);
+
+                    var context = new DBContext();
+                    SelectedCountry = context.Country.Find(value.CountryId);
+
+                    OnPropertyChanged(nameof(SelectedCity));
+                }
+            }
+        }
+
+        public Country SelectedCountry
+        {
+            get { return _selectedcountry; }
+            set
+            {
+                if (value != null && value != _selectedcountry)
+                {
+                    SetProperty(ref _selectedcountry, value);
+                    OnPropertyChanged(nameof(SelectedCountry));
+                }
+            }
+        }
+
     }
 }

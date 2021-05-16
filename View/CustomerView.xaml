@@ -56,12 +56,14 @@
                           Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
                           Height="200" Background="AliceBlue" Margin="5"
                           ItemsSource="{Binding AllCustomersLoaded}"
-                          CurrentItem="{Binding CurrentAppointment, Mode=OneWayToSource}"/>
+                          CurrentItem="{Binding SelectedCustomer, Mode=TwoWay}"/>
         </StackPanel>
         
         <Label Content="Selected Customer" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Margin="2"/>
         <StackPanel Grid.Column="2" Grid.Row="4">
-            <TextBox Text="Name" IsEnabled="False"/>
+            <TextBox Text="Name" IsEnabled="False"
+                     MinWidth="50"/>
+            <TextBox Text="Address" IsEnabled="False"/>
             <TextBox Text="Address" IsEnabled="False"/>
             <TextBox Text="City" IsEnabled="False"/>
             <TextBox Text="Country" IsEnabled="False"/>
@@ -69,29 +71,31 @@
             <TextBox Text="Phone" IsEnabled="False"/>
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="4">
-            <TextBox Name="nameBox" Text="{Binding SelectedCustomer.Name, Mode=TwoWay}" IsEnabled="True"/>
-            <TextBox Name="addressBox" Text="{Binding SelectedCustomer.Address, Mode=TwoWay}" IsEnabled="False"/>
-            <TextBox Name="cityBox" Text="{Binding SelectedCustomer.City, Mode=TwoWay}" IsEnabled="False"/>
-            <TextBox Name="countryBox" Text="{Binding SelectedCustomer.Country, Mode=TwoWay}" IsEnabled="False"/>
-            <TextBox Name="zipBox" Text="{Binding SelectedCustomer.Zip, Mode=TwoWay}" IsEnabled="False"/>
-            <TextBox Name="phoneBox" Text="{Binding SelectedCustomer.Phone, Mode=TwoWay}" IsEnabled="False"/>
+            <TextBox Name="nameBox" Text="{Binding SelectedCustomer.CustomerName, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"
+                     MinWidth="100"/>
+            <TextBox Name="addressBox" Text="{Binding SelectedAddress.Address1, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+            <TextBox Name="addressBox2" Text="{Binding SelectedAddress.Address2, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+            <TextBox Name="cityBox" Text="{Binding SelectedCity.City1, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+            <TextBox Name="countryBox" Text="{Binding SelectedCountry.Country1, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+            <TextBox Name="zipBox" Text="{Binding SelectedAddress.PostalCode, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+            <TextBox Name="phoneBox" Text="{Binding SelectedAddress.Phone, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
         </StackPanel>
 
 
         <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="5">
-            <Button Name="saveButton" Content="Save" Command="{Binding SaveCustomerCommand}" CommandParameter="{Binding}"
-                Width="40" Height="25" Margin="5" Visibility="Visible"/>
-            <Button Name="cancelButton" Content="Cancel" 
-                Width="40" Height="25" Margin="5" Visibility="Visible"/>
+            <Button Name="saveButton" Content="Save" Command="{Binding SaveCustomerCommand}" CommandParameter="{Binding SelectedCustomer}"
+                Width="40" Height="25" Margin="5" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+            <Button Name="cancelButton" Content="Cancel" Command="{Binding CancelCustomerCommand}"
+                Width="40" Height="25" Margin="5" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Column="5" Grid.Row="3">
-            <Button Name="addButton" Content="Add" 
-                Height="30" Width="50" Margin="5"/>
-            <Button Name="editButton" Content="Edit" Command="{Binding EditCustomerCommand}" CommandParameter="{Binding}"
-                Height="30" Width="50" Margin="5"/>
-            <Button Name="deleteButton" Content="Delete" 
-                Height="30" Width="50" Margin="5"/>
+            <Button Name="addButton" Content="Add" Command="{Binding AddCustomerCommand}" CommandParameter="{Binding SelectedCustomer}"
+                Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
+            <Button Name="editButton" Content="Edit" Command="{Binding EditCustomerCommand}" CommandParameter="{Binding SelectedCustomer}"
+                Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
+            <Button Name="deleteButton" Content="Delete" Command="{Binding DeleteCustomerCommand}" CommandParameter="{Binding SelectedCustomer}"
+                Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -8,8 +8,7 @@
     xmlns:local="clr-namespace:Scheduler"
     xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
     mc:Ignorable="d"
-    Height="450"
-    Width="400">
+    WindowStartupLocation="CenterScreen" Height="450" Width="400" >
 
     <Grid Background="WhiteSmoke" Margin="0,0,0,0" Height="450" Width="400">
         <TextBlock Text="{x:Static p:Resources.Title}" FontSize="30" FontWeight="Bold" Width="291" Margin="66,10,42,379"/>
