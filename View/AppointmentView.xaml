@@ -66,11 +66,63 @@
         <StackPanel Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="2">
             <TextBlock Text="Appointments" FontSize="30" FontWeight="Bold" Margin="5"/>
             <DataGrid Name="AppointmentsDataGrid"
-                          Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
-                          Height="200" Background="AliceBlue" Margin="5"
-                          IsReadOnly="True"
-                          ItemsSource="{Binding AllAppointmentsLoaded}"
-                          CurrentItem="{Binding SelectedAppointment, Mode=TwoWay}"/>
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Grid.Row="2" 
+                Height="200"
+                Background="AliceBlue"
+                Margin="5"
+                AlternatingRowBackground="LightBlue"
+                IsReadOnly="{Binding ViewMode, Mode=TwoWay}"
+                ItemsSource="{Binding AllAppointmentsLoaded}"
+                CurrentItem="{Binding SelectedAppointment, Mode=TwoWay}"
+                AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Customer Id" Binding="{Binding Path=CustomerId, Mode=TwoWay}"/>
+                    <DataGridTemplateColumn Header="Customer">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=CustomerId, Mode=TwoWay}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox Name="customerBox" ItemsSource="{Binding Customer}"
+                                    SelectedItem="{Binding CustomerId, Mode=TwoWay}"
+                                    IsSynchronizedWithCurrentItem="True"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Customer Type" Binding="{Binding Path=Type, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Title" Binding="{Binding Path=Title, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding Path=Description, Mode=TwoWay}"/>
+                    <DataGridTemplateColumn Header="Start Date">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DatePickerTextBox Text="{Binding Path=Start}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <xctk:DateTimeUpDown Name="startDatePicker" Value="{Binding Path=Start, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="End Date">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DatePickerTextBox Text="{Binding Path=End}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <xctk:DateTimeUpDown Name="endDatePicker" Value="{Binding Path=End, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
 
         <Label Content="Selected Appointment" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Margin="2"/>
