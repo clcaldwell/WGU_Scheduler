@@ -18,7 +18,7 @@ namespace Scheduler.ViewModel
         private bool _addMode = false;
 
         private bool _editMode = false;
-        
+
         private bool _viewMode = true;
 
         private List<Appointment> _allappointmentsloaded;
@@ -187,7 +187,7 @@ namespace Scheduler.ViewModel
 
         public List<Appointment> AllAppointmentsLoaded
         {
-            get { return _allappointmentsloaded;  }
+            get { return _allappointmentsloaded; }
             set { SetProperty(ref _allappointmentsloaded, value); }
         }
 
@@ -222,7 +222,7 @@ namespace Scheduler.ViewModel
                 if (value != null && value != _selectedcustomer)
                 {
                     SetProperty(ref _selectedcustomer, value);
-                    
+
                     if (SelectedAppointment != null && SelectedAppointment.CustomerId != value.CustomerId)
                     {
                         SelectedAppointment.CustomerId = value.CustomerId;

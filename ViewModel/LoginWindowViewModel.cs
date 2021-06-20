@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 
 using GalaSoft.MvvmLight.CommandWpf;
@@ -10,6 +11,7 @@ namespace Scheduler.ViewModel
 {
     public class LoginWindowViewModel : ViewModelBase
     {
+        public const string LogFile = "logins.txt";
         private Window loginWindow;
         private string _UserName;
         public string UserName
@@ -49,15 +51,33 @@ namespace Scheduler.ViewModel
         {
             if (string.IsNullOrEmpty(UserName))
             {
-                throw new Exception(Resources.MessageEmptyUserName);
+                LogLoginFailure(Resources.MessageEmptyUserName);
+                throw new Exception (Resources.MessageEmptyUserName);
             }
             if (string.IsNullOrEmpty(Password))
             {
-                throw new Exception(Resources.MessageEmptyPassword);
+                LogLoginFailure(Resources.MessageEmptyUserName);
+                throw new Exception (Resources.MessageEmptyPassword);
             }
+
         }
 
+        public void LogLoginFailure(string Reason)
+        {
+            File.AppendAllText(LogFile,
+                $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff")} - Failure: {UserName} , ErrorMessage: {Reason}" + Environment.NewLine
+            );
+        }
+
+        public void LogLoginSuccess()
+        {
+            File.AppendAllText(LogFile,
+                $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff")} - Success: {UserName}" + Environment.NewLine
+            );
+        }
+        
         public RelayCommand<string> LoginCommand { get; private set; }
+        
 
         public LoginWindowViewModel()
         {
@@ -67,11 +87,12 @@ namespace Scheduler.ViewModel
         public void Login(string login)
         {
             //ValidateLogin(UserName, Password);
+            LogLoginSuccess();
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.IsActive)
                 {
-                   loginWindow = window;
+                    loginWindow = window;
                 }
             }
 

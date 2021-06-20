@@ -15,7 +15,8 @@ namespace Scheduler.ViewModel
         }
 
         private ViewModelBase _CurrentViewModel;
-        public ViewModelBase CurrentViewModel {
+        public ViewModelBase CurrentViewModel
+        {
             get { return _CurrentViewModel; }
             set { SetProperty(ref _CurrentViewModel, value); }
         }

@@ -30,7 +30,7 @@ namespace Scheduler.Model.DBEntities
         {
             if (!optionsBuilder.IsConfigured)
             {
-               optionsBuilder.UseMySql(ConfigurationManager.ConnectionStrings["WGU_Database"].ConnectionString, x => x.ServerVersion("5.7.33-mysql"));
+                optionsBuilder.UseMySql(ConfigurationManager.ConnectionStrings["WGU_Database"].ConnectionString, x => x.ServerVersion("5.7.33-mysql"));
             }
         }
 
