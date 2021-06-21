@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 
@@ -21,6 +23,12 @@ namespace Scheduler.ViewModel
 
         private bool _viewMode = true;
 
+        private bool _gridDisplay = true;
+
+        private bool _calenderByMonthDisplay = false;
+
+        private bool _calenderByWeekDisplay = false;
+
         private List<Appointment> _allappointmentsloaded;
         private Customer _selectedcustomer;
 
@@ -31,22 +39,54 @@ namespace Scheduler.ViewModel
             View
         }
 
+        enum Display
+        {
+            Grid,
+            CalenderByMonth,
+            CalendarByWeek
+        }
+
         private void SetMode(Mode mode)
         {
             if (mode == Mode.Add)
             {
                 EditMode = true;
                 ViewMode = false;
+                SelectedCustomer = null;
+                ModifyAppointmentSelected = true;
             }
             if (mode == Mode.Edit)
             {
                 EditMode = true;
                 ViewMode = false;
+                ModifyAppointmentSelected = true;
             }
             if (mode == Mode.View)
             {
                 EditMode = false;
                 ViewMode = true;
+            }
+        }
+
+        private void SetDisplay(Display display)
+        {
+            if (display == Display.Grid)
+            {
+                GridDisplay = true;
+                CalenderByMonthDisplay = false;
+                CalenderByWeekDisplay = false;
+            }
+            if (display == Display.CalenderByMonth)
+            {
+                GridDisplay = false;
+                CalenderByMonthDisplay = true;
+                CalenderByWeekDisplay = false;
+            }
+            if (display == Display.CalendarByWeek)
+            {
+                GridDisplay = false;
+                CalenderByMonthDisplay = false;
+                CalenderByWeekDisplay = true;
             }
         }
 
@@ -123,6 +163,21 @@ namespace Scheduler.ViewModel
             SetMode(Mode.View);
         }
 
+        private void OnGridRadioButton(Appointment appointment)
+        {
+            SetDisplay(Display.Grid);
+        }
+
+        private void OnCalendarByMonthRadioButton(Appointment appointment)
+        {
+            SetDisplay(Display.CalenderByMonth);
+        }
+
+        private void OnCalendarByWeekRadioButton(Appointment appointment)
+        {
+            SetDisplay(Display.CalendarByWeek);
+        }
+
         public AppointmentViewModel()
         {
             AddAppointmentCommand = new RelayCommand<Appointment>(OnAddButton);
@@ -131,6 +186,10 @@ namespace Scheduler.ViewModel
 
             SaveAppointmentCommand = new RelayCommand<Appointment>(OnSaveButton);
             CancelAppointmentCommand = new RelayCommand<Appointment>(OnCancelButton);
+
+            SetGridCommand = new RelayCommand<Appointment>(OnGridRadioButton);
+            SetCalendarByMonthCommand = new RelayCommand<Appointment>(OnCalendarByMonthRadioButton);
+            SetCalendarByWeekCommand = new RelayCommand<Appointment>(OnCalendarByWeekRadioButton);
         }
 
         public RelayCommand<string> GetAppointmentsCommand { get; private set; }
@@ -139,6 +198,9 @@ namespace Scheduler.ViewModel
         public RelayCommand<Appointment> DeleteAppointmentCommand { get; private set; }
         public RelayCommand<Appointment> SaveAppointmentCommand { get; private set; }
         public RelayCommand<Appointment> CancelAppointmentCommand { get; private set; }
+        public RelayCommand<Appointment> SetGridCommand { get; private set; }
+        public RelayCommand<Appointment> SetCalendarByMonthCommand { get; private set; }
+        public RelayCommand<Appointment> SetCalendarByWeekCommand { get; private set; }
 
         public bool AddMode
         {
@@ -167,6 +229,36 @@ namespace Scheduler.ViewModel
             {
                 _editMode = value;
                 OnPropertyChanged(nameof(EditMode));
+            }
+        }
+
+        public bool GridDisplay
+        {
+            get { return _gridDisplay; }
+            set
+            {
+                _gridDisplay = value;
+                OnPropertyChanged(nameof(GridDisplay));
+            }
+        }
+
+        public bool CalenderByMonthDisplay
+        {
+            get { return _calenderByMonthDisplay; }
+            set
+            {
+                _calenderByMonthDisplay = value;
+                OnPropertyChanged(nameof(CalenderByMonthDisplay));
+            }
+        }
+
+        public bool CalenderByWeekDisplay
+        {
+            get { return _calenderByWeekDisplay; }
+            set
+            {
+                _calenderByWeekDisplay = value;
+                OnPropertyChanged(nameof(CalenderByWeekDisplay));
             }
         }
 
@@ -247,5 +339,146 @@ namespace Scheduler.ViewModel
 
         public int CustomerIndex { get => _customerIndex; set => SetProperty(ref _customerIndex, value); }
 
+        private object _tabControlSelectedItem;
+
+        public object TabControlSelectedItem
+        {
+            get { return _tabControlSelectedItem; }
+            set
+            {
+                SetProperty(ref _tabControlSelectedItem, value);
+                OnPropertyChanged(nameof(TabControlSelectedItem));
+            }
+        }
+
+        private bool _gridSelected;
+
+        public bool GridSelected
+        {
+            get { return _gridSelected; }
+            set
+            {
+                SetProperty(ref _gridSelected, value);
+                OnPropertyChanged(nameof(GridSelected));
+            }
+        }
+
+        private bool _monthlyCalendarSelected;
+
+        public bool MonthlyCalendarSelected
+        {
+            get { return _monthlyCalendarSelected; }
+            set
+            {
+                SetProperty(ref _monthlyCalendarSelected, value);
+                OnPropertyChanged(nameof(MonthlyCalendarSelected));
+            }
+        }
+
+        private bool _weeklyCalendarSelected;
+
+        public bool WeeklyCalendarSelected
+        {
+            get { return _weeklyCalendarSelected; }
+            set
+            {
+                SetProperty(ref _weeklyCalendarSelected, value);
+                OnPropertyChanged(nameof(WeeklyCalendarSelected));
+            }
+        }
+
+        private bool _modifyAppointmentSelected;
+
+        public bool ModifyAppointmentSelected
+        {
+            get { return _modifyAppointmentSelected; }
+            set
+            {
+                SetProperty(ref _modifyAppointmentSelected, value);
+                OnPropertyChanged(nameof(ModifyAppointmentSelected));
+            }
+        }
+
+        public void RefreshCalendar()
+        {
+            if (SelectedYear == null) return;
+            if (SelectedMonth == null) return;
+
+            int.TryParse(SelectedYear, out int year );
+            int month = DateTime.ParseExact(SelectedMonth, "MMMM", CultureInfo.InvariantCulture).Month;
+
+            DateTime targetDate = new DateTime(year, month, 1);
+
+            var Calendar = new Scheduler.XCalendar.Calendar();
+            Calendar.BuildCalendar(targetDate);
+        }
+
+        private string _selectedMonth = DateTime.Today.ToString("MMMM");
+
+        public string SelectedMonth
+        {
+            get { return _selectedMonth; }
+            set
+            {
+                SetProperty(ref _selectedMonth, value);
+                OnPropertyChanged(nameof(SelectedMonth));
+                RefreshCalendar();
+            }
+        }
+
+        private string _selectedYear = DateTime.Today.Year.ToString();
+
+        public string SelectedYear
+        {
+            get { return _selectedYear; }
+            set
+            {
+                SetProperty(ref _selectedYear, value);
+                OnPropertyChanged(nameof(SelectedYear));
+                RefreshCalendar();
+            }
+        }
+
+        public ObservableCollection<string> Months
+        {
+            get
+            {
+                return new ObservableCollection<string>(
+                    new List<string>
+                    {
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December"
+                    }
+                );
+            }
+            set { }
+        }
+
+        public ObservableCollection<string> Years
+        {
+            get
+            {
+                List<string> years = new List<string>();
+                for (int i = -3; i < 3; i++)
+                {
+                    years.Add(
+                        DateTime.Today.AddYears(i).Year.ToString()
+                    );
+                }
+
+                return new ObservableCollection<string>(years);
+            }
+            set { }
+        }
     }
 }
