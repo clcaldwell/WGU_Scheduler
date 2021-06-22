@@ -11,5 +11,6 @@ namespace Scheduler.View
             this.DataContext = new ReportViewModel();
             InitializeComponent();
         }
+
     }
 }

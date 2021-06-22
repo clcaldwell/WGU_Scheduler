@@ -8,6 +8,7 @@
     xmlns:local="clr-namespace:Scheduler"
     xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
     xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+    d:DataContext="{d:DesignInstance Type=ViewModel:ReportViewModel}"
     mc:Ignorable="d"
     d:DesignWidth="1000" Height="550">
     <UserControl.Resources>
@@ -41,20 +42,26 @@
 
         <StackPanel Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="2">
             <TextBlock Text="Reports" FontSize="30" FontWeight="Bold" Margin="5"/>
-            <RichTextBox Name="reportTextBox"
-                Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
-                Height="200" Background="AliceBlue" Margin="10"
-            />
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Margin="10">
-            <ListBox Name="reportsListBox">
-                <ListBoxItem>Number of Appt Types by Month</ListBoxItem>
-                <ListBoxItem>Per Consultant Schedule</ListBoxItem>
-                <ListBoxItem>Report #3</ListBoxItem>
-            </ListBox>
-            <TextBlock Visibility="Hidden"/>
-            <Button Name="generateButton" Content="Generate"/>
-        </StackPanel>
+        <TabControl Grid.Column="1" Grid.ColumnSpan="8" Grid.Row="3" Grid.RowSpan="3" HorizontalAlignment="Left" TabStripPlacement="Left"
+                    SelectedItem="{Binding Path=TabControlSelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=Twoway}">
+            <TabItem Header="Appt Types by Month" FontSize="20" IsSelected="{Binding MonthlyReportSelected}">
+                <StackPanel>
+                    <TextBlock Text="{Binding MonthlyReport}" FontSize="12" Margin="25" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Per Consultant Schedule" FontSize="20" IsSelected="{Binding ConsultantReportSelected}">
+                <StackPanel>
+                    <TextBlock Text="{Binding ConsultantReport}" FontSize="12" Margin="25" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Lunch Fraud Audit" FontSize="20" IsSelected="{Binding FraudReportSelected}">
+                <StackPanel>
+                    <TextBlock Text="{Binding FraudReport}" FontSize="12" Margin="25" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </UserControl>

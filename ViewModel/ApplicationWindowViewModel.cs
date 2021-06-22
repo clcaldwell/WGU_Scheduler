@@ -5,6 +5,8 @@ namespace Scheduler.ViewModel
 
     public class ApplicationWindowViewModel : ViewModelBase
     {
+        private ReminderViewModel _reminderViewModel = new ReminderViewModel();
+
         private AppointmentViewModel _appointmentViewModel = new AppointmentViewModel();
         private CustomerViewModel _customerViewModel = new CustomerViewModel();
         private ReportViewModel _reportViewModel = new ReportViewModel();
@@ -12,6 +14,7 @@ namespace Scheduler.ViewModel
         public ApplicationWindowViewModel()
         {
             NavCommand = new RelayCommand<string>(OnNav);
+            CurrentViewModel = _reminderViewModel;
         }
 
         private ViewModelBase _CurrentViewModel;

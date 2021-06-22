@@ -5,20 +5,25 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Scheduler"
-    xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
+    xmlns:ViewModel="clr-namespace:Scheduler.ViewModel" 
+    d:DataContext="{d:DesignInstance Type=ViewModel:ReminderViewModel}"
     mc:Ignorable="d"
-    d:DesignHeight="450"
-    d:DesignWidth="800">
+    d:DesignWidth="1000"
+    d:DesignHeight="550">
 
     <Grid Background="WhiteSmoke">
-        <Border Margin="10,0,10,0" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="430">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
-            </Border.Effect>
-        </Border>
         <StackPanel Margin="0,0,0,-20">
-            <TextBlock Text="Appointment Reminder" FontSize="30" FontWeight="Bold" Margin="20,20,0,20"/>
+            <TextBlock Text="Appointment Reminder" FontSize="30" FontWeight="Bold" Margin="20,20,20,20" HorizontalAlignment="Center"/>
+            <Border Margin="25" Background="White" VerticalAlignment="Center" CornerRadius="10">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
+                </Border.Effect>
+                <TextBlock Text="{Binding ReminderText}" TextWrapping="Wrap" Margin="50" HorizontalAlignment="Center"/>
+            </Border>
+            <TextBlock Text="Please click on a Navigation button above to continue"
+                       Margin="10" FontSize="13" FontStyle="Italic" Foreground="LightSalmon" HorizontalAlignment="Center"/>
         </StackPanel>
-        <Button Name="okButton" Content="OK" Height="30" Width="50" Margin="732,401,18,19"/>
+
     </Grid>
+
 </UserControl>

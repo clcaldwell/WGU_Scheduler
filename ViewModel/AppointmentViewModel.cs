@@ -50,9 +50,10 @@ namespace Scheduler.ViewModel
         {
             if (mode == Mode.Add)
             {
+                AddMode = true;
                 EditMode = true;
                 ViewMode = false;
-                SelectedCustomer = null;
+                SelectedAppointment = null;
                 ModifyAppointmentSelected = true;
             }
             if (mode == Mode.Edit)
@@ -64,6 +65,7 @@ namespace Scheduler.ViewModel
             if (mode == Mode.View)
             {
                 EditMode = false;
+                AddMode = false;
                 ViewMode = true;
             }
         }
@@ -107,8 +109,8 @@ namespace Scheduler.ViewModel
                     "\r\n Title:" + appointment.Title +
                     "\r\n Location:" + appointment.Location +
                     "\r\n Contact:" + appointment.Contact +
-                    "\r\n Start:" + appointment.Start.ToString() +
-                    "\r\n End:" + appointment.End.ToString(),
+                    "\r\n Start:" + appointment.Start.ToLocalTime().ToString() +
+                    "\r\n End:" + appointment.End.ToLocalTime().ToString(),
                 "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 var context = new DBContext();
@@ -126,7 +128,7 @@ namespace Scheduler.ViewModel
             {
                 int NextId = AllAppointments.OrderByDescending(a => a.AppointmentId).FirstOrDefault().AppointmentId + 1;
                 MessageBox.Show("NextAppointmentId: " + NextId);
-                /* Appointment NewAppointment = new Appointment
+                Appointment NewAppointment = new Appointment
                 {
                     AppointmentId = NextId,
                     CustomerId = appointment.CustomerId,
@@ -139,19 +141,33 @@ namespace Scheduler.ViewModel
                     Url = appointment.Url,
                     Start = appointment.Start,
                     End = appointment.End,
-                    CreateDate = appointment.CreateDate,
+                    CreateDate = appointment.CreateDate.ToUniversalTime(),
                     CreatedBy = appointment.CreatedBy,
-                    LastUpdate = appointment.LastUpdate,
+                    LastUpdate = appointment.LastUpdate.ToUniversalTime(),
                     LastUpdateBy = appointment.LastUpdateBy
                 };
- 
-                context.Add(NewAppointment); */
+
+                // Set any string null properties to empty string
+                foreach (var propertyInfo in NewAppointment.GetType().GetProperties())
+                {
+                    if (propertyInfo.PropertyType == typeof(string))
+                    {
+                        if (propertyInfo.GetValue(NewAppointment, null) == null)
+                        {
+                            propertyInfo.SetValue(NewAppointment, string.Empty, null);
+                        }
+                    }
+                }
+
+                context.Add(NewAppointment);
             }
             else
             {
+                appointment.Start = appointment.Start.ToUniversalTime();
+                appointment.End = appointment.End.ToUniversalTime();
                 context.Update(appointment);
             }
-
+            
             context.SaveChanges();
             LoadAppointments();
             SetMode(Mode.View);
@@ -207,7 +223,7 @@ namespace Scheduler.ViewModel
             get { return _addMode; }
             set
             {
-                _viewMode = value;
+                _addMode = value;
                 OnPropertyChanged(nameof(AddMode));
             }
         }
@@ -267,7 +283,14 @@ namespace Scheduler.ViewModel
             get
             {
                 var context = new DBContext();
-                return context.Appointment.ToList();
+                List<Appointment> appointments = context.Appointment.ToList();
+                foreach (Appointment appointment in appointments)
+                {
+                    appointment.Start = appointment.Start.ToLocalTime();
+                    appointment.End = appointment.End.ToLocalTime();
+                }
+
+                return appointments;
             }
             set
             {
@@ -286,7 +309,13 @@ namespace Scheduler.ViewModel
         public async void LoadAppointments()
         {
             var context = new DBContext();
-            AllAppointmentsLoaded = await context.Appointment.ToListAsync();
+            List<Appointment> appointments = await context.Appointment.ToListAsync();
+            foreach (Appointment appointment in appointments)
+            {
+                appointment.Start = appointment.Start.ToLocalTime();
+                appointment.End = appointment.End.ToLocalTime();
+            }
+            AllAppointmentsLoaded = appointments;
         }
 
         public Appointment SelectedAppointment
@@ -300,10 +329,12 @@ namespace Scheduler.ViewModel
 
                     var context = new DBContext();
                     SelectedCustomer = context.Customer.Find(value.CustomerId);
+                    SelectedAppointment.Start = SelectedAppointment.Start.ToLocalTime();
+                    SelectedAppointment.End = SelectedAppointment.End.ToLocalTime();
+                } 
 
                     OnPropertyChanged(nameof(SelectedAppointment));
                 }
-            }
         }
 
         public Customer SelectedCustomer

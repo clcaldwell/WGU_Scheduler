@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -36,8 +37,14 @@ namespace Scheduler.ViewModel
         {
             if (mode == Mode.Add)
             {
+                AddMode = true;
                 EditMode = true;
                 ViewMode = false;
+
+                if (SelectedCustomer == null)
+                {
+                    SelectedCustomer = AllCustomers.FirstOrDefault();
+                }
             }
             if (mode == Mode.Edit)
             {
@@ -46,6 +53,7 @@ namespace Scheduler.ViewModel
             }
             if (mode == Mode.View)
             {
+                AddMode = false;
                 EditMode = false;
                 ViewMode = true;
             }
@@ -84,29 +92,25 @@ namespace Scheduler.ViewModel
                 int NextId = AllCustomers.OrderByDescending(a => a.CustomerId).FirstOrDefault().CustomerId + 1;
                 MessageBox.Show("NextAppointmentId: " + NextId);
 
-                /*Customer NewCustomer = new Customer
+                Customer NewCustomer = new Customer
                 {
-                    AppointmentId = NextId,
-                    CustomerId = appointment.CustomerId,
-                    UserId = appointment.UserId,
-                    Title = appointment.Title,
-                    Description = appointment.Description,
-                    Location = appointment.Location,
-                    Contact = appointment.Contact,
-                    Type = appointment.Type,
-                    Url = appointment.Url,
-                    Start = appointment.Start,
-                    End = appointment.End,
-                    CreateDate = appointment.CreateDate,
-                    CreatedBy = appointment.CreatedBy,
-                    LastUpdate = appointment.LastUpdate,
-                    LastUpdateBy = appointment.LastUpdateBy
+                    CustomerId = NextId,
+                    CustomerName = customer.CustomerName,
+                    AddressId = customer.AddressId,
+                    Active = customer.Active,
+                    Address = customer.Address,
+                    CreateDate = DateTime.Now.ToUniversalTime(),
+                    CreatedBy = customer.CreatedBy,
+                    LastUpdate = DateTime.Now.ToUniversalTime(),
+                    LastUpdateBy = customer.LastUpdateBy
                 }; 
 
-                context.Add(NewAppointment); */
+                context.Add(NewCustomer);
             }
             else
             {
+                //customer.LastUpdate = DateTime.Now.ToUniversalTime();
+
                 context.Update(customer);
                 context.Update(SelectedAddress);
                 context.Update(SelectedCity);
@@ -146,7 +150,7 @@ namespace Scheduler.ViewModel
             get { return _addMode; }
             set
             {
-                _viewMode = value;
+                _addMode = value;
                 OnPropertyChanged(nameof(AddMode));
             }
         }

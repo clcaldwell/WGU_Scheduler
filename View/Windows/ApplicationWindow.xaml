@@ -21,6 +21,9 @@
         <DataTemplate DataType="{x:Type ViewModel:ReportViewModel}">
             <View:ReportView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModel:ReminderViewModel}">
+            <View:ReminderView/>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -50,4 +53,5 @@
             <ContentControl Content="{Binding CurrentViewModel}"/>
         </Grid>
     </Grid>
+
 </Window>
