@@ -8,6 +8,7 @@
     xmlns:local="clr-namespace:Scheduler"
     xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
     xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+    xmlns:Validation="clr-namespace:Scheduler.Validation"
     mc:Ignorable="d"
     d:DesignWidth="1000" Height="550">
     <i:Interaction.Triggers>
@@ -20,6 +21,14 @@
             <Setter Property="BorderBrush" Value="AliceBlue" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Height" Value="20" />
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                    Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                    <Setter Property="Background" Value="Salmon"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </UserControl.Resources>
 
@@ -71,20 +80,112 @@
             <TextBox Text="Phone" IsEnabled="False"/>
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="4">
-            <TextBox Name="nameBox" Text="{Binding SelectedCustomer.CustomerName, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"
-                     MinWidth="100"/>
-            <TextBox Name="addressBox" Text="{Binding SelectedAddress.Address1, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+            <TextBox Name="nameBox"
+                     IsEnabled="{Binding EditMode, Mode=OneWay}"
+                     MinWidth="100">
+                <TextBox.Text>
+                    <Binding Path="SelectedCustomer.CustomerName"
+                             Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged"
+                             NotifyOnValidationError="True" >
+                        <Binding.ValidationRules>
+                            <Validation:ValidateNotNullOrWhitespace/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox Name="addressBox" IsEnabled="{Binding EditMode, Mode=OneWay}">
+                <TextBox.Text>
+                    <Binding Path="SelectedAddress.Address1"
+                             Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged"
+                             NotifyOnValidationError="True" >
+                        <Binding.ValidationRules>
+                            <Validation:ValidateNotNullOrWhitespace/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
             <TextBox Name="addressBox2" Text="{Binding SelectedAddress.Address2, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-            <TextBox Name="cityBox" Text="{Binding SelectedCity.City1, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-            <TextBox Name="countryBox" Text="{Binding SelectedCountry.Country1, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-            <TextBox Name="zipBox" Text="{Binding SelectedAddress.PostalCode, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-            <TextBox Name="phoneBox" Text="{Binding SelectedAddress.Phone, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+            <TextBox Name="cityBox" IsEnabled="{Binding EditMode, Mode=OneWay}" >
+                <TextBox.Text>
+                    <Binding Path="SelectedCity.City1"
+                             Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged"
+                             NotifyOnValidationError="True" >
+                        <Binding.ValidationRules>
+                            <Validation:ValidateNotNullOrWhitespace/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox Name="countryBox" IsEnabled="{Binding EditMode, Mode=OneWay}" >
+                <TextBox.Text>
+                    <Binding Path="SelectedCountry.Country1"
+                             Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged"
+                             NotifyOnValidationError="True" >
+                        <Binding.ValidationRules>
+                            <Validation:ValidateNotNullOrWhitespace/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox Name="zipBox" IsEnabled="{Binding EditMode, Mode=OneWay}" >
+                <TextBox.Text>
+                    <Binding Path="SelectedAddress.PostalCode"
+                             Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged"
+                             NotifyOnValidationError="True" >
+                        <Binding.ValidationRules>
+                            <Validation:ValidateNotNullOrWhitespace/>
+                            <Validation:ValidateZipCode/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox Name="phoneBox" IsEnabled="{Binding EditMode, Mode=OneWay}" >
+                <TextBox.Text>
+                    <Binding Path="SelectedAddress.Phone"
+                             Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged"
+                             NotifyOnValidationError="True" >
+                        <Binding.ValidationRules>
+                            <Validation:ValidateNotNullOrWhitespace/>
+                            <Validation:ValidatePhoneNumber/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </StackPanel>
 
 
         <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="5">
-            <Button Name="saveButton" Content="Save" Command="{Binding SaveCustomerCommand}" CommandParameter="{Binding SelectedCustomer}"
-                Width="40" Height="25" Margin="5" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+            <Button Name="saveButton" Content="Save" Command="{Binding SaveCustomerCommand}"
+                    CommandParameter="{Binding SelectedCustomer}" Width="40" Height="25" Margin="5">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource  {x:Type Button}}">
+                        <Setter Property="IsEnabled" Value="false" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=nameBox, Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=addressBox, Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=addressBox2, Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=cityBox, Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=countryBox, Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=zipBox, Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=phoneBox, Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding Path=EditMode}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="true" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+
             <Button Name="cancelButton" Content="Cancel" Command="{Binding CancelCustomerCommand}"
                 Width="40" Height="25" Margin="5" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
         </StackPanel>

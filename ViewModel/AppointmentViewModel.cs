@@ -55,18 +55,21 @@ namespace Scheduler.ViewModel
                 ViewMode = false;
                 SelectedAppointment = null;
                 ModifyAppointmentSelected = true;
+                CanSave = true;
             }
             if (mode == Mode.Edit)
             {
                 EditMode = true;
                 ViewMode = false;
                 ModifyAppointmentSelected = true;
+                CanSave = true;
             }
             if (mode == Mode.View)
             {
                 EditMode = false;
                 AddMode = false;
                 ViewMode = true;
+                CanSave = false;
             }
         }
 
@@ -248,6 +251,18 @@ namespace Scheduler.ViewModel
             }
         }
 
+        private bool _canSave { get; set; }
+
+        public bool CanSave
+        {
+            get { return _canSave; }
+            set
+            {
+                _canSave = value;
+                OnPropertyChanged(nameof(CanSave));
+            }
+        }
+
         public bool GridDisplay
         {
             get { return _gridDisplay; }
@@ -316,6 +331,31 @@ namespace Scheduler.ViewModel
                 appointment.End = appointment.End.ToLocalTime();
             }
             AllAppointmentsLoaded = appointments;
+
+            DateTime Now = DateTime.Now.ToLocalTime();
+
+            WeeklyAppointments = appointments
+                .Where(appt => ISOWeek.GetWeekOfYear(appt.Start) == ISOWeek.GetWeekOfYear(Now))
+                .Where(appt => appt.Start.Year == Now.Year).ToList();
+
+            MonthlyAppointments = appointments
+                .Where(appt => appt.Start.Month == Now.Month)
+                .Where(appt => appt.Start.Year == Now.Year).ToList();
+
+        }
+
+        private List<Appointment> _weeklyAppointments;
+        public List<Appointment> WeeklyAppointments
+        {
+            get { return _weeklyAppointments; }
+            set { SetProperty(ref _weeklyAppointments, value); }
+        }
+
+        private List<Appointment> _monthlyAppointments;
+        public List<Appointment> MonthlyAppointments
+        {
+            get { return _monthlyAppointments; }
+            set { SetProperty(ref _monthlyAppointments, value); }
         }
 
         public Appointment SelectedAppointment
@@ -430,20 +470,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        public void RefreshCalendar()
-        {
-            if (SelectedYear == null) return;
-            if (SelectedMonth == null) return;
-
-            int.TryParse(SelectedYear, out int year );
-            int month = DateTime.ParseExact(SelectedMonth, "MMMM", CultureInfo.InvariantCulture).Month;
-
-            DateTime targetDate = new DateTime(year, month, 1);
-
-            var Calendar = new Scheduler.XCalendar.Calendar();
-            Calendar.BuildCalendar(targetDate);
-        }
-
         private string _selectedMonth = DateTime.Today.ToString("MMMM");
 
         public string SelectedMonth
@@ -453,7 +479,6 @@ namespace Scheduler.ViewModel
             {
                 SetProperty(ref _selectedMonth, value);
                 OnPropertyChanged(nameof(SelectedMonth));
-                RefreshCalendar();
             }
         }
 
@@ -466,7 +491,6 @@ namespace Scheduler.ViewModel
             {
                 SetProperty(ref _selectedYear, value);
                 OnPropertyChanged(nameof(SelectedYear));
-                RefreshCalendar();
             }
         }
 
@@ -511,5 +535,6 @@ namespace Scheduler.ViewModel
             }
             set { }
         }
+
     }
 }

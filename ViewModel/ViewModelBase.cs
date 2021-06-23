@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Scheduler
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged, IDataErrorInfo
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
@@ -20,5 +21,9 @@ namespace Scheduler
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        string IDataErrorInfo.Error => throw new NotImplementedException();
+
+        string IDataErrorInfo.this[string columnName] => throw new NotImplementedException();
     }
 }
