@@ -129,6 +129,12 @@
   <data name="MessageEmptyUserName" xml:space="preserve">
     <value>You must enter a UserName</value>
   </data>
+  <data name="MessageUserDoesNotExist" xml:space="preserve">
+    <value>User does not exist</value>
+  </data>
+  <data name="MessageWrongPassword" xml:space="preserve">
+    <value>Username / Password does not match</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>

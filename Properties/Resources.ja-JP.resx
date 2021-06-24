@@ -129,6 +129,12 @@
   <data name="MessageEmptyUserName" xml:space="preserve">
     <value>ユーザー名を入力する必要があります</value>
   </data>
+  <data name="MessageUserDoesNotExist" xml:space="preserve">
+    <value>ユーザーは存在しません</value>
+  </data>
+  <data name="MessageWrongPassword" xml:space="preserve">
+    <value>ユーザー名とパスワードが一致しません</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>パスワード</value>
   </data>

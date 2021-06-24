@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scheduler.Properties
-{
-
-
+namespace Scheduler.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -93,6 +93,24 @@ namespace Scheduler.Properties
         public static string MessageEmptyUserName {
             get {
                 return ResourceManager.GetString("MessageEmptyUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User does not exist.
+        /// </summary>
+        public static string MessageUserDoesNotExist {
+            get {
+                return ResourceManager.GetString("MessageUserDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username / Password does not match.
+        /// </summary>
+        public static string MessageWrongPassword {
+            get {
+                return ResourceManager.GetString("MessageWrongPassword", resourceCulture);
             }
         }
         

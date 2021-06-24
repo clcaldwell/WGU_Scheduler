@@ -9,7 +9,7 @@ You are not allowed to use frameworks or external libraries. The database does n
 Create a log-in form that can determine the user’s location and translate log-in and error control messages (e.g., “The username and password did not match.”) into the user’s language and in one additional language.  
 - [X] Login Form
 - [X] Language Checking
-- [] Error Messages for improper logins ( # Partially Coded but turned off for testing)
+- [X] Error Messages for improper logins ( # Partially Coded but turned off for testing)
 
 ### B.
 Provide the ability to add, update, and delete customer records in the database, including name, address, and phone number.  
@@ -38,7 +38,7 @@ Write exception controls to prevent each of the following. You may use the same 
 - [X] scheduling an appointment outside business hours (ValidationRules)
 - [X] scheduling overlapping appointments (Implemented custom OverlappingAppointmentException)
 - [X] entering nonexistent or invalid customer data (ValidationRules)
-- [] entering an incorrect username and password
+- [x] entering an incorrect username and password (Exceptions tied to resx resources)
 
 ### G.
 Write two or more lambda expressions to make your program more efficient, justifying the use of each lambda expression with an in-line comment.

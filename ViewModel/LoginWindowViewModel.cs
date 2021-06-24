@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 using GalaSoft.MvvmLight.CommandWpf;
 
+using Scheduler.Model.DBEntities;
 using Scheduler.Properties;
 using Scheduler.View;
 
@@ -56,8 +59,25 @@ namespace Scheduler.ViewModel
             }
             if (string.IsNullOrEmpty(Password))
             {
-                LogLoginFailure(Resources.MessageEmptyUserName);
+                LogLoginFailure(Resources.MessageEmptyPassword);
                 throw new Exception (Resources.MessageEmptyPassword);
+            }
+
+            //successful login - placed here to allow for faster login if no errors
+            if (AllUsers.Exists(usr => usr.UserName == UserName && usr.Password == Password))
+            {
+                return;
+            }
+
+            if (!AllUsers.Exists(usr => usr.UserName == UserName))
+            {
+                LogLoginFailure(Resources.MessageUserDoesNotExist);
+                throw new Exception(Resources.MessageUserDoesNotExist);
+            }
+            if (AllUsers.Exists(usr => usr.UserName == UserName && usr.Password != Password))
+            {
+                LogLoginFailure(Resources.MessageWrongPassword);
+                throw new Exception(Resources.MessageWrongPassword);
             }
 
         }
@@ -86,7 +106,15 @@ namespace Scheduler.ViewModel
 
         public void Login(string login)
         {
-            //ValidateLogin(UserName, Password);
+            try
+            {
+                ValidateLogin(UserName, Password);
+            } catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return;
+            }
+
             LogLoginSuccess();
             foreach (Window window in Application.Current.Windows)
             {
@@ -100,6 +128,22 @@ namespace Scheduler.ViewModel
             AppWindow.Show();
             loginWindow.Close();
             AppWindow.Focus();
+        }
+
+        public List<User> AllUsers
+        {
+            get
+            {
+                var context = new DBContext();
+                List<User> users = context.User.ToList();
+                return users;
+            }
+            set
+            {
+                var context = new DBContext();
+                context.User.UpdateRange(value.ToList());
+                context.SaveChanges();
+            }
         }
 
     }
