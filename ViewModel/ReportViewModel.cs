@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Scheduler.Model;
 using Scheduler.Model.DBEntities;
 
 namespace Scheduler.ViewModel
@@ -13,71 +16,95 @@ namespace Scheduler.ViewModel
 
         private async Task GenerateMonthlyReport()
         {
-            var text = new StringBuilder();
-            text.AppendLine("Appointment Types by Month: (Current Month +/- 2)");
-            text.AppendLine("");
             DateTime thisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            DateTime previousMonth = thisMonth.AddMonths(-2);
-            DateTime nextMonth = thisMonth.AddMonths(3).AddMilliseconds(-1);
+            DateTime previousMonth = thisMonth.AddMonths(-1);
+            DateTime nextMonth = thisMonth.AddMonths(2).AddMilliseconds(-1);
+            List<int> months = new List<int>() {
+                previousMonth.Month, thisMonth.Month, nextMonth.Month
+            };
+                
+            List<MonthlyReportModel> monthlyReport = new List<MonthlyReportModel>();
 
-            var groupedByMonthList = AllAppointments
-                .OrderBy(appt => appt.Start)
-                .Where(appt => appt.Start >= previousMonth && appt.Start <= nextMonth)
-                .GroupBy(appt => appt.Start.ToString("MMMM yyyy"));
+            var currentAppointments = AllAppointments.Where(appt =>
+                appt.Start.Month >= previousMonth.Month && appt.Start.Month <= nextMonth.Month)
+                .OrderBy(appt => appt.Start).ToList();
 
-            foreach (var group in groupedByMonthList)
+
+            foreach (var month in months)
             {
-                text.AppendLine($"{group.Key}:");
-                var groupedByTypeList = group.GroupBy(appt => appt.Type);
+                // Lambda: This lambda lets me do this logic concisely, instead of having
+                // to do the extended version of the logic over a dozen lines.
+                // This is much more readable and concise with the lambda.
+                var counts = currentAppointments
+                    .Where(appt => appt.Start.Month == month)
+                    .GroupBy(appt => appt.Type)
+                    .Select(appt => new { Value = appt.Key, Count = appt.Count() });
 
-                foreach (var list in groupedByTypeList)
+                foreach (var currentCount in counts)
                 {
-                    text.AppendLine($"\t{list.Key}: {list.Count()}");
+                        monthlyReport.Add(
+                            new MonthlyReportModel()
+                            {
+                                Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month),
+                                AppointmentType = currentCount.Value,
+                                AppointmentTypeCount = currentCount.Count
+                            }
+                    );
                 }
-                text.AppendLine("");
+
+
             }
 
-            MonthlyReport = text.ToString();
+            MonthlyReport = new ObservableCollection<MonthlyReportModel>(monthlyReport);
+        }
+
+        private ObservableCollection<MonthlyReportModel> _monthlyReport;
+        public ObservableCollection<MonthlyReportModel> MonthlyReport
+        {
+            get { return _monthlyReport; }
+            set
+            {
+                SetProperty(ref _monthlyReport, value);
+                OnPropertyChanged(nameof(MonthlyReport));
+            }
         }
 
         private async Task GenerateConsultantSchedule()
         {
-            var sb = new StringBuilder();
-            sb.AppendLine("Consultant Report: (Next 30 Days)");
-            sb.AppendLine("");
+            List<ConsultantReportModel> consultantReport = new List<ConsultantReportModel>();
 
-            var today = DateTime.Today;
-
-            var apptConsultants = AllAppointments
-                .Where(appt => appt.Start >= today && appt.Start <= today.AddDays(30))
-                .GroupBy(appt => appt.UserId);
-            
-            foreach (var apptConsultant in apptConsultants)
+            foreach (User consultant in AllUsers)
             {
-                var orderedApptConsultant = apptConsultant
-                    .OrderBy(appt => appt.Start);
-
-                var user = AllUsers
-                    .Where(user => user.UserId == apptConsultant.Key)
-                    .Single().UserName;
-
-                sb.AppendLine($"{user}: ");
-
-                foreach (var appt in orderedApptConsultant)
-                {
-                    var customer = AllCustomers
-                        .Where(customer => customer.CustomerId == appt.CustomerId)
-                        .Single().CustomerName;
-
-                    sb.AppendLine($"{customer} - \t{appt.Start}.");
-                }
-                sb.AppendLine();
+                AllAppointments.Where(appt => appt.UserId == consultant.UserId)
+                    .OrderBy(appt => appt.Start).ToList()
+                    .ForEach(
+                        appt => consultantReport.Add(
+                            new ConsultantReportModel()
+                            {
+                                Consultant = consultant.UserName,
+                                Appointment = appt.Start,
+                                AppointmentType = appt.Type,
+                                CustomerName =
+                                    AllCustomers.Where(cust => appt.CustomerId == cust.CustomerId).FirstOrDefault().CustomerName
+                            }
+                        )
+                    );
+                ConsultantReport = new ObservableCollection<ConsultantReportModel>(consultantReport);
             }
-
-            ConsultantReport = sb.ToString();
         }
 
-        private async Task GenerateCurrentWeekCustomerReport()
+        private ObservableCollection<ConsultantReportModel> _consultantReport;
+        public ObservableCollection<ConsultantReportModel> ConsultantReport
+        {
+            get { return _consultantReport; }
+            set
+            {
+                SetProperty(ref _consultantReport, value);
+                OnPropertyChanged(nameof(ConsultantReport));
+            }
+        }
+
+        private async Task GenerateFraudReport()
         {
             var text = new StringBuilder();
             text.AppendLine("Fraud Detection: Customers with Most Lunch appointments (All Time)");
@@ -87,8 +114,6 @@ namespace Scheduler.ViewModel
             Customer frequentCustomer = null;
             foreach (Customer customer in AllCustomers)
             {
-                // Lambda: This lambda lets me do this simple logic in one logical line, instead of having
-                // to do the extended version of the logic over multiple lines. This is much more readable and concise with the lambda.
                 int currentCount = AllAppointments.Where(appt => appt.CustomerId == customer.CustomerId).Count();
                 if (currentCount > counter)
                 {
@@ -110,12 +135,12 @@ namespace Scheduler.ViewModel
             FraudReport = text.ToString();
         }
 
-        public List<Customer> AllCustomers
+        public ObservableCollection<Customer> AllCustomers
         {
             get
             {
                 var context = new DBContext();
-                return context.Customer.ToList();
+                return new ObservableCollection<Customer>(context.Customer.ToList());
             }
             set
             {
@@ -125,7 +150,7 @@ namespace Scheduler.ViewModel
             }
         }
 
-        public List<Appointment> AllAppointments
+        public ObservableCollection<Appointment> AllAppointments
         {
             get
             {
@@ -137,7 +162,7 @@ namespace Scheduler.ViewModel
                     appointment.End = appointment.End.ToLocalTime();
                 }
 
-                return appointments;
+                return new ObservableCollection<Appointment>(appointments);
             }
             set
             {
@@ -147,44 +172,18 @@ namespace Scheduler.ViewModel
             }
         }
 
-        public List<User> AllUsers
+        public ObservableCollection<User> AllUsers
         {
             get
             {
                 var context = new DBContext();
-                List<User> users = context.User.ToList();
-                
-                return users;
+                return new ObservableCollection<User>(context.User.ToList());
             }
             set
             {
                 var context = new DBContext();
                 context.User.UpdateRange(value.ToList());
                 context.SaveChanges();
-            }
-        }
-
-        private string _monthlyReport;
-
-        public string MonthlyReport
-        {
-            get { return _monthlyReport; }
-            set
-            {
-                SetProperty(ref _monthlyReport, value);
-                OnPropertyChanged(nameof(MonthlyReport));
-            }
-        }
-
-        private string _consultantReport;
-
-        public string ConsultantReport
-        {
-            get { return _consultantReport; }
-            set
-            {
-                SetProperty(ref _consultantReport, value);
-                OnPropertyChanged(nameof(ConsultantReport));
             }
         }
 
@@ -209,7 +208,7 @@ namespace Scheduler.ViewModel
             {
                 SetProperty(ref _monthlyReportSelected, value);
                 OnPropertyChanged(nameof(MonthlyReportSelected));
-                GenerateMonthlyReport();
+                var _ = GenerateMonthlyReport();
             }
         }
 
@@ -222,7 +221,7 @@ namespace Scheduler.ViewModel
             {
                 SetProperty(ref _consultantReportSelected, value);
                 OnPropertyChanged(nameof(ConsultantReportSelected));
-                GenerateConsultantSchedule();
+                var _ = GenerateConsultantSchedule();
             }
         }
 
@@ -235,12 +234,19 @@ namespace Scheduler.ViewModel
             {
                 SetProperty(ref _fraudReportSelected, value);
                 OnPropertyChanged(nameof(FraudReportSelected));
-                GenerateCurrentWeekCustomerReport();
+                var _ = GenerateFraudReport();
             }
         }
 
-        private object tabControlSelectedItem;
+        private object _tabControlSelectedItem;
 
-        public object TabControlSelectedItem { get => tabControlSelectedItem; set => SetProperty(ref tabControlSelectedItem, value); }
+        public object TabControlSelectedItem
+        {
+            get { return _tabControlSelectedItem; }
+            set
+            {
+                SetProperty(ref _tabControlSelectedItem, value);
+            }
+        }
     }
 }

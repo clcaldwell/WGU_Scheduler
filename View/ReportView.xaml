@@ -17,6 +17,16 @@
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Height" Value="20" />
         </Style>
+        <CollectionViewSource x:Key="ConsultantViewSource" Source="{Binding ConsultantReport}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Consultant" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="MonthlyViewSource" Source="{Binding MonthlyReport}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Month" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
     
     <Grid Background="WhiteSmoke">
@@ -48,12 +58,49 @@
                     SelectedItem="{Binding Path=TabControlSelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=Twoway}">
             <TabItem Header="Appt Types by Month" FontSize="20" IsSelected="{Binding MonthlyReportSelected}">
                 <StackPanel>
-                    <TextBlock Text="{Binding MonthlyReport}" FontSize="12" Margin="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Appointment Types per Month, (+/-1 Month)" />
+                    <ListView Name="MonthlyListView" ItemsSource="{Binding Source={StaticResource MonthlyViewSource}}" FontSize="12">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Appointment Type" DisplayMemberBinding="{Binding AppointmentType}"/>
+                                <GridViewColumn Header="Count" DisplayMemberBinding="{Binding AppointmentTypeCount}" />
+                            </GridView>
+                        </ListView.View>
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontWeight="Bold" FontSize="20" Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Per Consultant Schedule" FontSize="20" IsSelected="{Binding ConsultantReportSelected}">
+            <TabItem Header="Per Consultant Schedule" FontSize="20" 
+                     IsSelected="{Binding ConsultantReportSelected}">
                 <StackPanel>
-                    <TextBlock Text="{Binding ConsultantReport}" FontSize="12" Margin="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Per Consultant Schedule" />
+                    <ListView Name="ConsultantListView" ItemsSource="{Binding Source={StaticResource ConsultantViewSource}}" FontSize="12">
+                    <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Consultant" DisplayMemberBinding="{Binding Consultant}"/>
+                                <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Appointment}" />
+                                <GridViewColumn Header="Type" DisplayMemberBinding="{Binding AppointmentType}" />
+                                <GridViewColumn Header="Customer" DisplayMemberBinding="{Binding CustomerName}"/>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontWeight="Bold" FontSize="20" Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Lunch Fraud Audit" FontSize="20" IsSelected="{Binding FraudReportSelected}">

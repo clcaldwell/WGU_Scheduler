@@ -25,8 +25,8 @@ Provide the ability to add, update, and delete appointments, capturing the type 
 
 ### D.
 Provide the ability to view the calendar by month and by week.
-- [] Calender By Month
-- [] Calender By week
+- [X] Calender By Month
+- [X] Calender By week
 
 ### E.
 Provide the ability to automatically adjust appointment times based on user time zones and daylight saving time.
@@ -35,15 +35,15 @@ Provide the ability to automatically adjust appointment times based on user time
 ### F.
 Write exception controls to prevent each of the following. You may use the same mechanism of exception control more than once, but you must incorporate at least two different customized mechanisms of exception control.
 
-- [X] scheduling an appointment outside business hours (Done via Binding.ValidationRules)
-- [] scheduling overlapping appointments
-- [] entering nonexistent or invalid customer data
+- [X] scheduling an appointment outside business hours (ValidationRules)
+- [X] scheduling overlapping appointments (Implemented custom OverlappingAppointmentException)
+- [X] entering nonexistent or invalid customer data (ValidationRules)
 - [] entering an incorrect username and password
 
 ### G.
 Write two or more lambda expressions to make your program more efficient, justifying the use of each lambda expression with an in-line comment.
-- [X] 1st Lambda (In the reminders)
-- [] 2nd Lambda
+- [X] 1st Lambda (ReminderViewModel.cs, Line 22)
+- [X] 2nd Lambda (ReportViewModel.cs, Line 35)
 
 ### H.
 Write code to provide reminders and alerts 15 minutes in advance of an appointment, based on the user’s log-in.
@@ -51,8 +51,8 @@ Write code to provide reminders and alerts 15 minutes in advance of an appointme
 
 ### I.
 Provide the ability to generate each  of the following reports using the collection classes:
-- [] number of appointment types by month (Redo this)
-- [] the schedule for each  consultant (Redo this)
+- [X] number of appointment types by month
+- [X] the schedule for each  consultant
 - [X] one additional report of your choice 
 
 ### J.

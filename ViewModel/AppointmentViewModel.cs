@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 
 using Microsoft.EntityFrameworkCore;
 
+using Scheduler.Exceptions;
 using Scheduler.Model.DBEntities;
 
 namespace Scheduler.ViewModel
@@ -126,6 +127,15 @@ namespace Scheduler.ViewModel
 
         private void OnSaveButton(Appointment appointment)
         {
+            try
+            {
+                CheckIfAppointmentOverlapping(appointment);
+            } catch(OverlappingAppointmentException e)
+            {
+                MessageBox.Show(e.Message);
+                return;
+            }
+
             var context = new DBContext();
             if (AddMode)
             {
@@ -170,10 +180,35 @@ namespace Scheduler.ViewModel
                 appointment.End = appointment.End.ToUniversalTime();
                 context.Update(appointment);
             }
-            
+
             context.SaveChanges();
             LoadAppointments();
             SetMode(Mode.View);
+        }
+
+        public void CheckIfAppointmentOverlapping(Appointment appointment)
+        {
+            foreach (Appointment existingAppt in AllAppointments.Where(appt => appt.AppointmentId != appointment.AppointmentId))
+            {
+                string message =
+                    $"The start of the appointment conflicts with\r\n" +
+                    "an existing appointment. Please correct the time.\r\n" +
+                    $"Existing Appointment: {existingAppt.Start.ToLocalTime()} - {existingAppt.End.ToLocalTime()}";
+
+                var newApptStart = appointment.Start.ToUniversalTime();
+                var newApptEnd = appointment.End.ToUniversalTime();
+                var existingApptStart = existingAppt.Start.ToUniversalTime();
+                var existingApptEnd = existingAppt.End.ToUniversalTime();
+
+                if ((existingApptStart < newApptStart) && (existingApptEnd > newApptStart))
+                {
+                    throw (new OverlappingAppointmentException(message));
+                }
+                if ((existingApptStart < newApptEnd) && (existingApptEnd > newApptStart))
+                {
+                    throw (new OverlappingAppointmentException(message));
+                }
+            }
         }
 
         private void OnCancelButton(Appointment appointment)

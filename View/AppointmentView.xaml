@@ -102,60 +102,22 @@
                             IsEnabled="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Customer Id" Binding="{Binding Path=CustomerId, Mode=TwoWay}"/>
-                                <DataGridTemplateColumn Header="Customer">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=CustomerId, Mode=TwoWay}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <ComboBox Name="customerBox" ItemsSource="{Binding Customer}"
-                                                SelectedItem="{Binding CustomerId, Mode=TwoWay}"
-                                                IsSynchronizedWithCurrentItem="True"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Customer Type" Binding="{Binding Path=Type, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="Appt Type" Binding="{Binding Path=Type, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Title" Binding="{Binding Path=Title, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Description" Binding="{Binding Path=Description, Mode=TwoWay}"/>
-                                <DataGridTemplateColumn Header="Start Date">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DatePickerTextBox Text="{Binding Path=Start}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <xctk:DateTimeUpDown Name="startDatePicker" Value="{Binding Path=Start, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="End Date">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DatePickerTextBox Text="{Binding Path=End}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <xctk:DateTimeUpDown Name="endDatePicker" Value="{Binding Path=End, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Start Date" Binding="{Binding Path=Start, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="End Date" Binding="{Binding Path=End, Mode=TwoWay}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Grid.Column="5" Grid.Row="11">
-                        <Button Name="addButton_weekly" Content="Add" Command="{Binding AddAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
+                        <StackPanel Orientation="Horizontal">
+                            <Button Name="addButton_weekly" Content="Add" Command="{Binding AddAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
                             Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
-                        <Button Name="editButton_weekly" Content="Edit" Command="{Binding EditAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
+                            <Button Name="editButton_weekly" Content="Edit" Command="{Binding EditAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
                             Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
-                        <Button Name="deleteButton_weekly" Content="Delete" Command="{Binding DeleteAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
+                            <Button Name="deleteButton_weekly" Content="Delete" Command="{Binding DeleteAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
                             Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
+                        </StackPanel>
                     </StackPanel>
                 </WrapPanel>
             </TabItem>
@@ -178,60 +140,22 @@
                             IsEnabled="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Customer Id" Binding="{Binding Path=CustomerId, Mode=TwoWay}"/>
-                                <DataGridTemplateColumn Header="Customer">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=CustomerId, Mode=TwoWay}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <ComboBox Name="customerBox" ItemsSource="{Binding Customer}"
-                                                SelectedItem="{Binding CustomerId, Mode=TwoWay}"
-                                                IsSynchronizedWithCurrentItem="True"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Customer Type" Binding="{Binding Path=Type, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="Appt Type" Binding="{Binding Path=Type, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Title" Binding="{Binding Path=Title, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Description" Binding="{Binding Path=Description, Mode=TwoWay}"/>
-                                <DataGridTemplateColumn Header="Start Date">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DatePickerTextBox Text="{Binding Path=Start}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <xctk:DateTimeUpDown Name="startDatePicker" Value="{Binding Path=Start, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="End Date">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DatePickerTextBox Text="{Binding Path=End}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <xctk:DateTimeUpDown Name="endDatePicker" Value="{Binding Path=End, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Start Date" Binding="{Binding Path=Start, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="End Date" Binding="{Binding Path=End, Mode=TwoWay}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Grid.Column="5" Grid.Row="11">
-                        <Button Name="addButton_monthly" Content="Add" Command="{Binding AddAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
+                        <StackPanel Orientation="Horizontal">
+                            <Button Name="addButton_monthly" Content="Add" Command="{Binding AddAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
                             Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
-                        <Button Name="editButton_monthly" Content="Edit" Command="{Binding EditAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
+                            <Button Name="editButton_monthly" Content="Edit" Command="{Binding EditAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
                             Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
-                        <Button Name="deleteButton_monthly" Content="Delete" Command="{Binding DeleteAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
+                            <Button Name="deleteButton_monthly" Content="Delete" Command="{Binding DeleteAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
                             Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
+                        </StackPanel>
                     </StackPanel>
                 </WrapPanel>
             </TabItem>
@@ -254,60 +178,22 @@
                             IsEnabled="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Customer Id" Binding="{Binding Path=CustomerId, Mode=TwoWay}"/>
-                                <DataGridTemplateColumn Header="Customer">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=CustomerId, Mode=TwoWay}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <ComboBox Name="customerBox" ItemsSource="{Binding Customer}"
-                                    SelectedItem="{Binding CustomerId, Mode=TwoWay}"
-                                    IsSynchronizedWithCurrentItem="True"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Customer Type" Binding="{Binding Path=Type, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="Appt Type" Binding="{Binding Path=Type, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Title" Binding="{Binding Path=Title, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Location" Binding="{Binding Path=Location, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Description" Binding="{Binding Path=Description, Mode=TwoWay}"/>
-                                <DataGridTemplateColumn Header="Start Date">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DatePickerTextBox Text="{Binding Path=Start}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <xctk:DateTimeUpDown Name="startDatePicker" Value="{Binding Path=Start, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="End Date">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DatePickerTextBox Text="{Binding Path=End}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <xctk:DateTimeUpDown Name="endDatePicker" Value="{Binding Path=End, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Start Date" Binding="{Binding Path=Start, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="End Date" Binding="{Binding Path=End, Mode=TwoWay}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Grid.Column="5" Grid.Row="11">
-                        <Button Name="addButton_grid" Content="Add" Command="{Binding AddAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
+                        <StackPanel Orientation="Horizontal">
+                            <Button Name="addButton_grid" Content="Add" Command="{Binding AddAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
                             Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
-                        <Button Name="editButton_grid" Content="Edit" Command="{Binding EditAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
+                            <Button Name="editButton_grid" Content="Edit" Command="{Binding EditAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
                             Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
-                        <Button Name="deleteButton_grid" Content="Delete" Command="{Binding DeleteAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
+                            <Button Name="deleteButton_grid" Content="Delete" Command="{Binding DeleteAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
                             Height="30" Width="50" Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}"/>
+                        </StackPanel>
                     </StackPanel>
                 </WrapPanel>
             </TabItem>

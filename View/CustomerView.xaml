@@ -61,11 +61,24 @@
 
         <StackPanel Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="2">
             <TextBlock Text="Customers" FontSize="30" FontWeight="Bold" Margin="5" MinHeight="40"/>
-            <DataGrid Name="CustomerssDataGrid"
+            <DataGrid Name="CustomersDataGrid"
                           Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
                           Height="200" Background="AliceBlue" Margin="5"
+                          AlternatingRowBackground="LightBlue"
+                          IsReadOnly="True"
                           ItemsSource="{Binding AllCustomersLoaded}"
-                          CurrentItem="{Binding SelectedCustomer, Mode=TwoWay}"/>
+                          CurrentItem="{Binding SelectedCustomer, Mode=TwoWay}"
+                          AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Customer Id" Binding="{Binding Path=CustomerId, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Customer Name" Binding="{Binding Path=CustomerName, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Create Date" Binding="{Binding Path=CreateDate, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Created By" Binding="{Binding Path=CreatedBy, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Last Update" Binding="{Binding Path=LastUpdate, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Last Update by" Binding="{Binding Path=LastUpdateBy, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Active" Binding="{Binding Path=Active, Mode=TwoWay}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
         
         <Label Content="Selected Customer" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Margin="2"/>
