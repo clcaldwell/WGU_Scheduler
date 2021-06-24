@@ -16,22 +16,30 @@ namespace Scheduler.ViewModel
 {
     public class AppointmentViewModel : ViewModelBase
     {
-        private Appointment _selectedappointment;
-
         private bool _addMode = false;
-
         private bool _editMode = false;
-
         private bool _viewMode = true;
-
         private bool _gridDisplay = true;
-
         private bool _calenderByMonthDisplay = false;
-
         private bool _calenderByWeekDisplay = false;
+        private bool _gridSelected;
+        private bool _monthlyCalendarSelected;
+        private bool _weeklyCalendarSelected;
+        private bool _modifyAppointmentSelected;
+
+        private Appointment _selectedappointment;
+        private Customer _selectedcustomer;
+
+        private int _customerIndex;
 
         private List<Appointment> _allappointmentsloaded;
-        private Customer _selectedcustomer;
+        private List<Appointment> _weeklyAppointments;
+        private List<Appointment> _monthlyAppointments;
+        
+        private object _tabControlSelectedItem;
+        
+        private string _selectedMonth = DateTime.Today.ToString("MMMM");
+        private string _selectedYear = DateTime.Today.Year.ToString();
 
         enum Mode
         {
@@ -56,21 +64,18 @@ namespace Scheduler.ViewModel
                 ViewMode = false;
                 SelectedAppointment = null;
                 ModifyAppointmentSelected = true;
-                CanSave = true;
             }
             if (mode == Mode.Edit)
             {
                 EditMode = true;
                 ViewMode = false;
                 ModifyAppointmentSelected = true;
-                CanSave = true;
             }
             if (mode == Mode.View)
             {
                 EditMode = false;
                 AddMode = false;
                 ViewMode = true;
-                CanSave = false;
             }
         }
 
@@ -286,18 +291,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private bool _canSave { get; set; }
-
-        public bool CanSave
-        {
-            get { return _canSave; }
-            set
-            {
-                _canSave = value;
-                OnPropertyChanged(nameof(CanSave));
-            }
-        }
-
         public bool GridDisplay
         {
             get { return _gridDisplay; }
@@ -379,14 +372,12 @@ namespace Scheduler.ViewModel
 
         }
 
-        private List<Appointment> _weeklyAppointments;
         public List<Appointment> WeeklyAppointments
         {
             get { return _weeklyAppointments; }
             set { SetProperty(ref _weeklyAppointments, value); }
         }
 
-        private List<Appointment> _monthlyAppointments;
         public List<Appointment> MonthlyAppointments
         {
             get { return _monthlyAppointments; }
@@ -441,11 +432,7 @@ namespace Scheduler.ViewModel
             set { }
         }
 
-        private int _customerIndex;
-
         public int CustomerIndex { get => _customerIndex; set => SetProperty(ref _customerIndex, value); }
-
-        private object _tabControlSelectedItem;
 
         public object TabControlSelectedItem
         {
@@ -457,8 +444,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private bool _gridSelected;
-
         public bool GridSelected
         {
             get { return _gridSelected; }
@@ -468,8 +453,6 @@ namespace Scheduler.ViewModel
                 OnPropertyChanged(nameof(GridSelected));
             }
         }
-
-        private bool _monthlyCalendarSelected;
 
         public bool MonthlyCalendarSelected
         {
@@ -481,8 +464,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private bool _weeklyCalendarSelected;
-
         public bool WeeklyCalendarSelected
         {
             get { return _weeklyCalendarSelected; }
@@ -492,8 +473,6 @@ namespace Scheduler.ViewModel
                 OnPropertyChanged(nameof(WeeklyCalendarSelected));
             }
         }
-
-        private bool _modifyAppointmentSelected;
 
         public bool ModifyAppointmentSelected
         {
@@ -505,8 +484,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private string _selectedMonth = DateTime.Today.ToString("MMMM");
-
         public string SelectedMonth
         {
             get { return _selectedMonth; }
@@ -516,8 +493,6 @@ namespace Scheduler.ViewModel
                 OnPropertyChanged(nameof(SelectedMonth));
             }
         }
-
-        private string _selectedYear = DateTime.Today.Year.ToString();
 
         public string SelectedYear
         {

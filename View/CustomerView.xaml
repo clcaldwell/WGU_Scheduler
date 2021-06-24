@@ -7,7 +7,6 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Scheduler"
     xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
-    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
     xmlns:Validation="clr-namespace:Scheduler.Validation"
     mc:Ignorable="d"
     d:DesignWidth="1000" Height="550">

@@ -15,8 +15,12 @@ namespace Scheduler.ViewModel
     public class LoginWindowViewModel : ViewModelBase
     {
         public const string LogFile = "logins.txt";
+
         private Window loginWindow;
+
         private string _UserName;
+        private string _Password;
+
         public string UserName
         {
             get
@@ -33,7 +37,7 @@ namespace Scheduler.ViewModel
             }
 
         }
-        private string _Password;
+
         public string Password
         {
             get
@@ -98,7 +102,6 @@ namespace Scheduler.ViewModel
         
         public RelayCommand<string> LoginCommand { get; private set; }
         
-
         public LoginWindowViewModel()
         {
             LoginCommand = new RelayCommand<string>(Login);

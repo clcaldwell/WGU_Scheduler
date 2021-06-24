@@ -13,6 +13,14 @@ namespace Scheduler.ViewModel
 {
     public class ReportViewModel : ViewModelBase
     {
+        private ObservableCollection<MonthlyReportModel> _monthlyReport;
+        private ObservableCollection<ConsultantReportModel> _consultantReport;
+
+        private string _fraudReport;
+        private bool _monthlyReportSelected;
+        private bool _consultantReportSelected;
+        private bool _fraudReportSelected;
+        private object _tabControlSelectedItem;
 
         private async Task GenerateMonthlyReport()
         {
@@ -58,17 +66,6 @@ namespace Scheduler.ViewModel
             MonthlyReport = new ObservableCollection<MonthlyReportModel>(monthlyReport);
         }
 
-        private ObservableCollection<MonthlyReportModel> _monthlyReport;
-        public ObservableCollection<MonthlyReportModel> MonthlyReport
-        {
-            get { return _monthlyReport; }
-            set
-            {
-                SetProperty(ref _monthlyReport, value);
-                OnPropertyChanged(nameof(MonthlyReport));
-            }
-        }
-
         private async Task GenerateConsultantSchedule()
         {
             List<ConsultantReportModel> consultantReport = new List<ConsultantReportModel>();
@@ -93,17 +90,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private ObservableCollection<ConsultantReportModel> _consultantReport;
-        public ObservableCollection<ConsultantReportModel> ConsultantReport
-        {
-            get { return _consultantReport; }
-            set
-            {
-                SetProperty(ref _consultantReport, value);
-                OnPropertyChanged(nameof(ConsultantReport));
-            }
-        }
-
         private async Task GenerateFraudReport()
         {
             var text = new StringBuilder();
@@ -121,7 +107,7 @@ namespace Scheduler.ViewModel
                     frequentCustomer = customer;
                 }
             }
-            
+
             text.AppendLine($"Number of Lunches:\t{counter}");
             text.AppendLine($"Frequent Customer:\t{frequentCustomer.CustomerName}");
 
@@ -133,6 +119,26 @@ namespace Scheduler.ViewModel
             }
 
             FraudReport = text.ToString();
+        }
+
+        public ObservableCollection<MonthlyReportModel> MonthlyReport
+        {
+            get { return _monthlyReport; }
+            set
+            {
+                SetProperty(ref _monthlyReport, value);
+                OnPropertyChanged(nameof(MonthlyReport));
+            }
+        }
+
+        public ObservableCollection<ConsultantReportModel> ConsultantReport
+        {
+            get { return _consultantReport; }
+            set
+            {
+                SetProperty(ref _consultantReport, value);
+                OnPropertyChanged(nameof(ConsultantReport));
+            }
         }
 
         public ObservableCollection<Customer> AllCustomers
@@ -187,8 +193,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private string _fraudReport;
-
         public string FraudReport
         {
             get { return _fraudReport; }
@@ -198,8 +202,6 @@ namespace Scheduler.ViewModel
                 OnPropertyChanged(nameof(FraudReport));
             }
         }
-
-        private bool _monthlyReportSelected;
 
         public bool MonthlyReportSelected
         {
@@ -212,8 +214,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private bool _consultantReportSelected;
-
         public bool ConsultantReportSelected
         {
             get { return _consultantReportSelected; }
@@ -225,8 +225,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private bool _fraudReportSelected;
-
         public bool FraudReportSelected
         {
             get { return _fraudReportSelected; }
@@ -237,8 +235,6 @@ namespace Scheduler.ViewModel
                 var _ = GenerateFraudReport();
             }
         }
-
-        private object _tabControlSelectedItem;
 
         public object TabControlSelectedItem
         {

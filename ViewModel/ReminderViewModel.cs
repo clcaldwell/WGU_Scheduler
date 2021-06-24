@@ -9,6 +9,9 @@ namespace Scheduler.ViewModel
 {
     public class ReminderViewModel : ViewModelBase
     {
+        private string _reminderText { get; set; }
+
+        private Appointment _currentAppointment { get; set; }
 
         public ReminderViewModel()
         {
@@ -66,8 +69,6 @@ namespace Scheduler.ViewModel
             }
         }
 
-        private string _reminderText { get; set; }
-
         public string ReminderText
         {
             get { return _reminderText; }
@@ -77,8 +78,6 @@ namespace Scheduler.ViewModel
                 OnPropertyChanged(nameof(ReminderText));
             }
         }
-
-        private Appointment _currentAppointment { get; set; }
 
         public Appointment CurrentAppointment
         {

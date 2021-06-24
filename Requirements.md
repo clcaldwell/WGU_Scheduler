@@ -61,4 +61,4 @@ Provide the ability to track user activity by recording timestamps for user log-
 
 ### K.
 Demonstrate professional communication in the content and presentation of your submission.
-- [] Everything is awesome
+- [X] Everything is awesome
