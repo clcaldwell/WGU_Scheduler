@@ -75,7 +75,8 @@
             <TextBlock Text="Appointments" FontSize="30" FontWeight="Bold" Margin="5" MinHeight="40"/>
         </StackPanel>
 
-        <TabControl Grid.Column="1" Grid.ColumnSpan="8" Grid.Row="2" Grid.RowSpan="8" HorizontalAlignment="Left" TabStripPlacement="Left" SelectedItem="{Binding Path=TabControlSelectedItem,UpdateSourceTrigger=PropertyChanged,Mode=Twoway}">
+        <TabControl Grid.Column="1" Grid.ColumnSpan="8" Grid.Row="2" Grid.RowSpan="8" HorizontalAlignment="Left" 
+                    TabStripPlacement="Left" SelectedItem="{Binding Path=TabControlSelectedItem,UpdateSourceTrigger=PropertyChanged,Mode=Twoway}">
             <TabItem Header="Weekly Calendar" FontSize="20" IsSelected="{Binding WeeklyCalendarSelected}">
                 <WrapPanel Grid.Column="2" Grid.ColumnSpan="8" Grid.Row="3">
                     <StackPanel >
@@ -291,7 +292,8 @@
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
-                       
+
+
 
                         <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="5">
                             <Button Name="saveButton" Content="Save" Command="{Binding SaveAppointmentCommand}" CommandParameter="{Binding SelectedAppointment}"
@@ -322,7 +324,7 @@
                             <Button Name="cancelButton" Content="Cancel" Command="{Binding CancelAppointmentCommand}"
                                 Width="40" Height="25" Margin="10" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
                         </StackPanel>
-                        
+
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Column="7" Grid.Row="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" >

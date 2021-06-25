@@ -77,7 +77,7 @@ namespace Scheduler.ViewModel
                 if (value != _reminderText)
                 {
                     SetProperty(ref _reminderText, value);
-                    OnPropertyChanged(nameof(ReminderText));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -90,7 +90,7 @@ namespace Scheduler.ViewModel
                 if (value != _currentAppointment)
                 {
                     SetProperty(ref _currentAppointment, value);
-                    OnPropertyChanged(nameof(CurrentAppointment));
+                    OnPropertyChanged();
                 }
             }
         }

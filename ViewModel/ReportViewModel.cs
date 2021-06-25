@@ -33,12 +33,12 @@ namespace Scheduler.ViewModel
                 
             List<MonthlyReportModel> monthlyReport = new List<MonthlyReportModel>();
 
-            var currentAppointments = AllAppointments.Where(appt =>
+            List<Appointment> currentAppointments = AllAppointments.Where(appt =>
                 appt.Start.Month >= previousMonth.Month && appt.Start.Month <= nextMonth.Month)
                 .OrderBy(appt => appt.Start).ToList();
 
 
-            foreach (var month in months)
+            foreach (int month in months)
             {
                 // Lambda: This lambda lets me do this logic concisely, instead of having
                 // to do the extended version of the logic over a dozen lines.
@@ -91,7 +91,7 @@ namespace Scheduler.ViewModel
 
         private async Task GenerateFraudReport()
         {
-            var text = new StringBuilder();
+            StringBuilder text = new StringBuilder();
             text.AppendLine("Fraud Detection: Customers with Most Lunch appointments (All Time)");
             text.AppendLine("");
 
@@ -110,9 +110,9 @@ namespace Scheduler.ViewModel
             text.AppendLine($"Number of Lunches:\t{counter}");
             text.AppendLine($"Frequent Customer:\t{frequentCustomer.CustomerName}");
 
-            var listOfFrequentLunches = AllAppointments.Where(appt => appt.CustomerId == frequentCustomer.CustomerId);
+            IEnumerable<Appointment> listOfFrequentLunches = AllAppointments.Where(appt => appt.CustomerId == frequentCustomer.CustomerId);
 
-            foreach (var appt in listOfFrequentLunches)
+            foreach (Appointment appt in listOfFrequentLunches)
             {
                 text.AppendLine($"Date:\t{appt.Start.Date:MM/dd/yyyy}");
             }
@@ -126,7 +126,7 @@ namespace Scheduler.ViewModel
             set
             {
                 SetProperty(ref _monthlyReport, value);
-                OnPropertyChanged(nameof(MonthlyReport));
+                OnPropertyChanged();
             }
         }
 
@@ -136,7 +136,7 @@ namespace Scheduler.ViewModel
             set
             {
                 SetProperty(ref _consultantReport, value);
-                OnPropertyChanged(nameof(ConsultantReport));
+                OnPropertyChanged();
             }
         }
 
@@ -144,12 +144,12 @@ namespace Scheduler.ViewModel
         {
             get
             {
-                var context = new DBContext();
+                DBContext context = new DBContext();
                 return new ObservableCollection<Customer>(context.Customer.ToList());
             }
             set
             {
-                var context = new DBContext();
+                DBContext context = new DBContext();
                 context.Customer.UpdateRange(value.ToList());
                 context.SaveChanges();
             }
@@ -159,7 +159,7 @@ namespace Scheduler.ViewModel
         {
             get
             {
-                var context = new DBContext();
+                DBContext context = new DBContext();
                 List<Appointment> appointments = context.Appointment.ToList();
                 foreach (Appointment appointment in appointments)
                 {
@@ -171,7 +171,7 @@ namespace Scheduler.ViewModel
             }
             set
             {
-                var context = new DBContext();
+                DBContext context = new DBContext();
                 context.Appointment.UpdateRange(value.ToList());
                 context.SaveChanges();
             }
@@ -181,12 +181,12 @@ namespace Scheduler.ViewModel
         {
             get
             {
-                var context = new DBContext();
+                DBContext context = new DBContext();
                 return new ObservableCollection<User>(context.User.ToList());
             }
             set
             {
-                var context = new DBContext();
+                DBContext context = new DBContext();
                 context.User.UpdateRange(value.ToList());
                 context.SaveChanges();
             }
@@ -200,7 +200,7 @@ namespace Scheduler.ViewModel
                 if (value != _fraudReport)
                 {
                     SetProperty(ref _fraudReport, value);
-                    OnPropertyChanged(nameof(FraudReport));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -213,8 +213,8 @@ namespace Scheduler.ViewModel
                 if (value != _monthlyReportSelected)
                 {
                     SetProperty(ref _monthlyReportSelected, value);
-                    OnPropertyChanged(nameof(MonthlyReportSelected));
-                    var _ = GenerateMonthlyReport();
+                    OnPropertyChanged();
+                    GenerateMonthlyReport();
                 }
             }
         }
@@ -227,8 +227,8 @@ namespace Scheduler.ViewModel
                 if (value != _consultantReportSelected)
                 {
                     SetProperty(ref _consultantReportSelected, value);
-                    OnPropertyChanged(nameof(ConsultantReportSelected));
-                    var _ = GenerateConsultantSchedule();
+                    OnPropertyChanged();
+                    GenerateConsultantSchedule();
                 }
             }
         }
@@ -241,8 +241,8 @@ namespace Scheduler.ViewModel
                 if (value != _fraudReportSelected)
                 {
                     SetProperty(ref _fraudReportSelected, value);
-                    OnPropertyChanged(nameof(FraudReportSelected));
-                    var _ = GenerateFraudReport();
+                    OnPropertyChanged();
+                    GenerateFraudReport();
                 }
             }
         }
@@ -255,7 +255,7 @@ namespace Scheduler.ViewModel
                 if (value != _tabControlSelectedItem)
                 {
                     SetProperty(ref _tabControlSelectedItem, value);
-                    OnPropertyChanged(nameof(TabControlSelectedItem));
+                    OnPropertyChanged();
                 }
             }
         }

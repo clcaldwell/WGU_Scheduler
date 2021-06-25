@@ -26,7 +26,7 @@ namespace Scheduler.ViewModel
                 if (value != _currentViewModel)
                 {
                     SetProperty(ref _currentViewModel, value);
-                    OnPropertyChanged(nameof(CurrentViewModel));
+                    OnPropertyChanged();
                 }
             }
         }

@@ -32,9 +32,9 @@ namespace Scheduler.ViewModel
 
         private int _customerIndex;
 
-        private List<Appointment> _allappointmentsloaded;
-        private List<Appointment> _weeklyAppointments;
-        private List<Appointment> _monthlyAppointments;
+        private ObservableCollection<Appointment> _allappointmentsloaded;
+        private ObservableCollection<Appointment> _weeklyAppointments;
+        private ObservableCollection<Appointment> _monthlyAppointments;
         
         private object _tabControlSelectedItem;
         
@@ -145,7 +145,6 @@ namespace Scheduler.ViewModel
             if (AddMode)
             {
                 int NextId = AllAppointments.OrderByDescending(a => a.AppointmentId).FirstOrDefault().AppointmentId + 1;
-                MessageBox.Show("NextAppointmentId: " + NextId);
                 Appointment NewAppointment = new Appointment
                 {
                     AppointmentId = NextId,
@@ -200,10 +199,10 @@ namespace Scheduler.ViewModel
                     "an existing appointment. Please correct the time.\r\n" +
                     $"Existing Appointment: {existingAppt.Start.ToLocalTime()} - {existingAppt.End.ToLocalTime()}";
 
-                var newApptStart = appointment.Start.ToUniversalTime();
-                var newApptEnd = appointment.End.ToUniversalTime();
-                var existingApptStart = existingAppt.Start.ToUniversalTime();
-                var existingApptEnd = existingAppt.End.ToUniversalTime();
+                DateTime newApptStart = appointment.Start.ToUniversalTime();
+                DateTime newApptEnd = appointment.End.ToUniversalTime();
+                DateTime existingApptStart = existingAppt.Start.ToUniversalTime();
+                DateTime existingApptEnd = existingAppt.End.ToUniversalTime();
 
                 if ((existingApptStart < newApptStart) && (existingApptEnd > newApptStart))
                 {
@@ -269,7 +268,7 @@ namespace Scheduler.ViewModel
                 if (value != _addMode)
                 {
                     SetProperty(ref _addMode, value);
-                    OnPropertyChanged(nameof(AddMode));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -282,7 +281,7 @@ namespace Scheduler.ViewModel
                 if (value != _viewMode)
                 {
                     SetProperty(ref _viewMode, value);
-                    OnPropertyChanged(nameof(ViewMode));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -295,7 +294,7 @@ namespace Scheduler.ViewModel
                 if (value != _editMode)
                 {
                     SetProperty(ref _editMode, value);
-                    OnPropertyChanged(nameof(EditMode));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -308,7 +307,7 @@ namespace Scheduler.ViewModel
                 if (value != _gridDisplay)
                 {
                     SetProperty(ref _gridDisplay, value);
-                    OnPropertyChanged(nameof(GridDisplay));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -321,7 +320,7 @@ namespace Scheduler.ViewModel
                 if (value != _calenderByMonthDisplay)
                 {
                     SetProperty(ref _calenderByMonthDisplay, value);
-                    OnPropertyChanged(nameof(CalenderByMonthDisplay));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -334,7 +333,7 @@ namespace Scheduler.ViewModel
                 if (value != _calenderByWeekDisplay)
                 {
                     SetProperty(ref _calenderByWeekDisplay, value);
-                    OnPropertyChanged(nameof(CalenderByWeekDisplay));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -361,7 +360,7 @@ namespace Scheduler.ViewModel
             }
         }
 
-        public List<Appointment> AllAppointmentsLoaded
+        public ObservableCollection<Appointment> AllAppointmentsLoaded
         {
             get => _allappointmentsloaded;
             set 
@@ -369,35 +368,39 @@ namespace Scheduler.ViewModel
                 if (value != _allappointmentsloaded)
                 {
                     SetProperty(ref _allappointmentsloaded, value);
-                    OnPropertyChanged(nameof(AllAppointmentsLoaded));
+                    OnPropertyChanged();
                 }
             }
         }
 
         public async void LoadAppointments()
         {
-            var context = new DBContext();
+            DBContext context = new DBContext();
             List<Appointment> appointments = await context.Appointment.ToListAsync();
             foreach (Appointment appointment in appointments)
             {
                 appointment.Start = appointment.Start.ToLocalTime();
                 appointment.End = appointment.End.ToLocalTime();
             }
-            AllAppointmentsLoaded = appointments;
+            AllAppointmentsLoaded = new ObservableCollection<Appointment>(appointments);
 
             DateTime Now = DateTime.Now.ToLocalTime();
 
-            WeeklyAppointments = appointments
+            WeeklyAppointments = new ObservableCollection<Appointment>(
+                appointments
                 .Where(appt => ISOWeek.GetWeekOfYear(appt.Start) == ISOWeek.GetWeekOfYear(Now))
-                .Where(appt => appt.Start.Year == Now.Year).ToList();
+                .Where(appt => appt.Start.Year == Now.Year)
+            );
 
-            MonthlyAppointments = appointments
+            MonthlyAppointments = new ObservableCollection<Appointment>(
+                appointments
                 .Where(appt => appt.Start.Month == Now.Month)
-                .Where(appt => appt.Start.Year == Now.Year).ToList();
+                .Where(appt => appt.Start.Year == Now.Year)
+            );
 
         }
 
-        public List<Appointment> WeeklyAppointments
+        public ObservableCollection<Appointment> WeeklyAppointments
         {
             get => _weeklyAppointments;
             set
@@ -405,19 +408,19 @@ namespace Scheduler.ViewModel
                 if (value != _weeklyAppointments)
                 {
                     SetProperty(ref _weeklyAppointments, value);
-                    OnPropertyChanged(nameof(WeeklyAppointments));
+                    OnPropertyChanged();
                 }
             }
         }
 
-        public List<Appointment> MonthlyAppointments
+        public ObservableCollection<Appointment> MonthlyAppointments
         {
             get => _monthlyAppointments; set
             {
                 if (value != _monthlyAppointments)
                 {
                     SetProperty(ref _monthlyAppointments, value);
-                    OnPropertyChanged(nameof(MonthlyAppointments));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -429,15 +432,17 @@ namespace Scheduler.ViewModel
             {
                 if (value != null && value != _selectedappointment)
                 {
+                    value.Start = value.Start.ToLocalTime();
+                    value.End = value.End.ToLocalTime();
+                    
                     SetProperty(ref _selectedappointment, value);
+                    OnPropertyChanged();
 
-                    var context = new DBContext();
+                    DBContext context = new DBContext();
                     SelectedCustomer = context.Customer.Find(value.CustomerId);
-                    SelectedAppointment.Start = SelectedAppointment.Start.ToLocalTime();
-                    SelectedAppointment.End = SelectedAppointment.End.ToLocalTime();
                 }
 
-                OnPropertyChanged(nameof(SelectedAppointment));
+                
             }
         }
 
@@ -449,13 +454,12 @@ namespace Scheduler.ViewModel
                 if (value != null && value != _selectedcustomer)
                 {
                     SetProperty(ref _selectedcustomer, value);
+                    OnPropertyChanged();
 
                     if (SelectedAppointment != null && SelectedAppointment.CustomerId != value.CustomerId)
                     {
                         SelectedAppointment.CustomerId = value.CustomerId;
                     }
-
-                    OnPropertyChanged(nameof(SelectedCustomer));
                 }
             }
         }
@@ -464,7 +468,7 @@ namespace Scheduler.ViewModel
         {
             get
             {
-                var context = new DBContext();
+                DBContext context = new DBContext();
                 return new ObservableCollection<Customer>(context.Customer.ToList());
             }
             set { }
@@ -478,7 +482,7 @@ namespace Scheduler.ViewModel
                 if (value != _customerIndex)
                 {
                     SetProperty(ref _customerIndex, value);
-                    OnPropertyChanged(nameof(CustomerIndex));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -491,7 +495,7 @@ namespace Scheduler.ViewModel
                 if (value != _tabControlSelectedItem)
                 {
                     SetProperty(ref _tabControlSelectedItem, value);
-                    OnPropertyChanged(nameof(TabControlSelectedItem));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -504,7 +508,7 @@ namespace Scheduler.ViewModel
                 if (value != _gridSelected)
                 {
                     SetProperty(ref _gridSelected, value);
-                    OnPropertyChanged(nameof(GridSelected));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -517,7 +521,7 @@ namespace Scheduler.ViewModel
                 if (value != _monthlyCalendarSelected)
                 {
                     SetProperty(ref _monthlyCalendarSelected, value);
-                    OnPropertyChanged(nameof(MonthlyCalendarSelected));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -530,7 +534,7 @@ namespace Scheduler.ViewModel
                 if (value != _weeklyCalendarSelected)
                 {
                     SetProperty(ref _weeklyCalendarSelected, value);
-                    OnPropertyChanged(nameof(WeeklyCalendarSelected));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -543,7 +547,7 @@ namespace Scheduler.ViewModel
                 if (value != _modifyAppointmentSelected)
                 {
                     SetProperty(ref _modifyAppointmentSelected, value);
-                    OnPropertyChanged(nameof(ModifyAppointmentSelected));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -556,7 +560,7 @@ namespace Scheduler.ViewModel
                 if (value != _selectedMonth)
                 {
                     SetProperty(ref _selectedMonth, value);
-                    OnPropertyChanged(nameof(SelectedMonth));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -569,7 +573,7 @@ namespace Scheduler.ViewModel
                 if (value != _selectedYear)
                 {
                     SetProperty(ref _selectedYear, value);
-                    OnPropertyChanged(nameof(SelectedYear));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -578,23 +582,21 @@ namespace Scheduler.ViewModel
         {
             get
             {
-                return new ObservableCollection<string>(
-                    new List<string>
-                    {
-                        "January",
-                        "February",
-                        "March",
-                        "April",
-                        "May",
-                        "June",
-                        "July",
-                        "August",
-                        "September",
-                        "October",
-                        "November",
-                        "December"
-                    }
-                );
+                return new ObservableCollection<string>()
+                {
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December"
+                };
             }
             set { }
         }

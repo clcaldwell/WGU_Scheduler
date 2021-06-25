@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
@@ -23,6 +24,9 @@ namespace Scheduler.ViewModel
         private bool _addMode = false;
         private bool _editMode = false;
         private bool _viewMode = true;
+        private object _tabControlSelectedItem;
+        private bool _customerTabSelected;
+        private bool _addressTabSelected;
 
         enum Mode
         {
@@ -89,7 +93,6 @@ namespace Scheduler.ViewModel
             {
                 int NextId = AllCustomers.
                     OrderByDescending(a => a.CustomerId).FirstOrDefault().CustomerId + 1;
-                MessageBox.Show("NextAppointmentId: " + NextId);
 
                 Customer NewCustomer = new Customer
                 {
@@ -152,7 +155,7 @@ namespace Scheduler.ViewModel
                 if (value != _addMode)
                 {
                     SetProperty(ref _addMode, value);
-                    OnPropertyChanged(nameof(AddMode));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -165,7 +168,7 @@ namespace Scheduler.ViewModel
                 if (value != _viewMode)
                 {
                     SetProperty(ref _viewMode, value);
-                    OnPropertyChanged(nameof(ViewMode));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -178,7 +181,7 @@ namespace Scheduler.ViewModel
                 if (value != _editMode)
                 {
                     SetProperty(ref _editMode, value);
-                    OnPropertyChanged(nameof(EditMode));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -206,7 +209,7 @@ namespace Scheduler.ViewModel
                 if (value != _allcustomersloaded)
                 {
                     SetProperty(ref _allcustomersloaded, value);
-                    OnPropertyChanged(nameof(AllCustomersLoaded));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -229,7 +232,7 @@ namespace Scheduler.ViewModel
                     var context = new DBContext();
                     SelectedAddress = context.Address.Find(value.AddressId);
 
-                    OnPropertyChanged(nameof(SelectedCustomer));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -246,7 +249,7 @@ namespace Scheduler.ViewModel
                     var context = new DBContext();
                     SelectedCity = context.City.Find(value.CityId);
 
-                    OnPropertyChanged(nameof(SelectedAddress));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -263,7 +266,7 @@ namespace Scheduler.ViewModel
                     var context = new DBContext();
                     SelectedCountry = context.Country.Find(value.CountryId);
 
-                    OnPropertyChanged(nameof(SelectedCity));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -276,7 +279,61 @@ namespace Scheduler.ViewModel
                 if (value != null && value != _selectedcountry)
                 {
                     SetProperty(ref _selectedcountry, value);
-                    OnPropertyChanged(nameof(SelectedCountry));
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public ObservableCollection<Address> AllAddresses
+        {
+            get
+            {
+                var context = new DBContext();
+                return new ObservableCollection<Address>(context.Address.ToList());
+            }
+            set
+            {
+                var context = new DBContext();
+                context.Address.UpdateRange(value.ToList());
+                context.SaveChanges();
+            }
+        }
+
+        public object TabControlSelectedItem
+        {
+            get => _tabControlSelectedItem;
+            set
+            {
+                if (value != _tabControlSelectedItem)
+                {
+                    SetProperty(ref _tabControlSelectedItem, value);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool CustomerTabSelected
+        {
+            get => _customerTabSelected;
+            set
+            {
+                if (value != _customerTabSelected)
+                {
+                    SetProperty(ref _customerTabSelected, value);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool AddressTabSelected
+        {
+            get => _addressTabSelected;
+            set
+            {
+                if (value != _addressTabSelected)
+                {
+                    SetProperty(ref _addressTabSelected, value);
+                    OnPropertyChanged();
                 }
             }
         }

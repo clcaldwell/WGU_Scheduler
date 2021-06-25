@@ -17,9 +17,9 @@ namespace Scheduler
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged(this,
+            PropertyChanged?.Invoke(this,
                 new PropertyChangedEventArgs(propertyName));
         }
 

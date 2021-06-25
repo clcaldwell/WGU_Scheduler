@@ -29,7 +29,7 @@ namespace Scheduler.ViewModel
                 if (!string.Equals(_userName, value))
                 {
                     SetProperty(ref _userName, value);
-                    OnPropertyChanged(nameof(_userName));
+                    OnPropertyChanged();
                 }
             }
 
@@ -43,7 +43,7 @@ namespace Scheduler.ViewModel
                 if (!string.Equals(_password, value))
                 {
                     SetProperty(ref _password, value);
-                    OnPropertyChanged(nameof(_password));
+                    OnPropertyChanged();
                 }
             }
         }
