@@ -18,21 +18,18 @@ namespace Scheduler.ViewModel
 
         private Window loginWindow;
 
-        private string _UserName;
-        private string _Password;
+        private string _userName;
+        private string _password;
 
         public string UserName
         {
-            get
-            {
-                return this._UserName;
-            }
-
+            get => _userName;
             set
             {
-                if (!string.Equals(this._UserName, value))
+                if (!string.Equals(_userName, value))
                 {
-                    this._UserName = value;
+                    SetProperty(ref _userName, value);
+                    OnPropertyChanged(nameof(_userName));
                 }
             }
 
@@ -40,16 +37,13 @@ namespace Scheduler.ViewModel
 
         public string Password
         {
-            get
-            {
-                return this._Password;
-            }
-
+            get => _password;
             set
             {
-                if (!string.Equals(this._Password, value))
+                if (!string.Equals(_password, value))
                 {
-                    this._Password = value;
+                    SetProperty(ref _password, value);
+                    OnPropertyChanged(nameof(_password));
                 }
             }
         }
@@ -58,12 +52,12 @@ namespace Scheduler.ViewModel
         {
             if (string.IsNullOrEmpty(UserName))
             {
-                LogLoginFailure(Resources.MessageEmptyUserName);
+                LogLogin(false, Resources.MessageEmptyUserName);
                 throw new Exception (Resources.MessageEmptyUserName);
             }
             if (string.IsNullOrEmpty(Password))
             {
-                LogLoginFailure(Resources.MessageEmptyPassword);
+                LogLogin(false, Resources.MessageEmptyPassword);
                 throw new Exception (Resources.MessageEmptyPassword);
             }
 
@@ -75,39 +69,41 @@ namespace Scheduler.ViewModel
 
             if (!AllUsers.Exists(usr => usr.UserName == UserName))
             {
-                LogLoginFailure(Resources.MessageUserDoesNotExist);
+                LogLogin(false, Resources.MessageUserDoesNotExist);
                 throw new Exception(Resources.MessageUserDoesNotExist);
             }
             if (AllUsers.Exists(usr => usr.UserName == UserName && usr.Password != Password))
             {
-                LogLoginFailure(Resources.MessageWrongPassword);
+                LogLogin(false, Resources.MessageWrongPassword);
                 throw new Exception(Resources.MessageWrongPassword);
             }
 
         }
 
-        public void LogLoginFailure(string Reason)
+        public void LogLogin(bool success, string reason = null)
         {
-            File.AppendAllText(LogFile,
-                $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff")} - Failure: {UserName} , ErrorMessage: {Reason}" + Environment.NewLine
-            );
-        }
+            var message = new string("");
+            if (success)
+            {
+                message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ff} - Success: {UserName}";
+            }
+            else if (!success)
+            {
+                message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ff} - Failure: {UserName} ," + 
+                    $" ErrorMessage: {reason}";
+            }
 
-        public void LogLoginSuccess()
-        {
-            File.AppendAllText(LogFile,
-                $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff")} - Success: {UserName}" + Environment.NewLine
-            );
+            File.AppendAllText(LogFile, message + Environment.NewLine);
         }
         
         public RelayCommand<string> LoginCommand { get; private set; }
         
         public LoginWindowViewModel()
         {
-            LoginCommand = new RelayCommand<string>(Login);
+            LoginCommand = new RelayCommand<string>(TryLogin);
         }
 
-        public void Login(string login)
+        public void TryLogin(string login)
         {
             try
             {
@@ -118,7 +114,8 @@ namespace Scheduler.ViewModel
                 return;
             }
 
-            LogLoginSuccess();
+            LogLogin(true);
+
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.IsActive)

@@ -19,7 +19,8 @@ namespace Scheduler
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged(this,
+                new PropertyChangedEventArgs(propertyName));
         }
 
         string IDataErrorInfo.Error => throw new NotImplementedException();

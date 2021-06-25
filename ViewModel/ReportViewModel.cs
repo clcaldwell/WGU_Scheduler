@@ -60,7 +60,6 @@ namespace Scheduler.ViewModel
                     );
                 }
 
-
             }
 
             MonthlyReport = new ObservableCollection<MonthlyReportModel>(monthlyReport);
@@ -195,53 +194,69 @@ namespace Scheduler.ViewModel
 
         public string FraudReport
         {
-            get { return _fraudReport; }
+            get => _fraudReport;
             set
             {
-                SetProperty(ref _fraudReport, value);
-                OnPropertyChanged(nameof(FraudReport));
+                if (value != _fraudReport)
+                {
+                    SetProperty(ref _fraudReport, value);
+                    OnPropertyChanged(nameof(FraudReport));
+                }
             }
         }
 
         public bool MonthlyReportSelected
         {
-            get { return _monthlyReportSelected; }
+            get => _monthlyReportSelected;
             set
             {
-                SetProperty(ref _monthlyReportSelected, value);
-                OnPropertyChanged(nameof(MonthlyReportSelected));
-                var _ = GenerateMonthlyReport();
+                if (value != _monthlyReportSelected)
+                {
+                    SetProperty(ref _monthlyReportSelected, value);
+                    OnPropertyChanged(nameof(MonthlyReportSelected));
+                    var _ = GenerateMonthlyReport();
+                }
             }
         }
 
         public bool ConsultantReportSelected
         {
-            get { return _consultantReportSelected; }
+            get => _consultantReportSelected;
             set
             {
-                SetProperty(ref _consultantReportSelected, value);
-                OnPropertyChanged(nameof(ConsultantReportSelected));
-                var _ = GenerateConsultantSchedule();
+                if (value != _consultantReportSelected)
+                {
+                    SetProperty(ref _consultantReportSelected, value);
+                    OnPropertyChanged(nameof(ConsultantReportSelected));
+                    var _ = GenerateConsultantSchedule();
+                }
             }
         }
 
         public bool FraudReportSelected
         {
-            get { return _fraudReportSelected; }
+            get => _fraudReportSelected; 
             set
             {
-                SetProperty(ref _fraudReportSelected, value);
-                OnPropertyChanged(nameof(FraudReportSelected));
-                var _ = GenerateFraudReport();
+                if (value != _fraudReportSelected)
+                {
+                    SetProperty(ref _fraudReportSelected, value);
+                    OnPropertyChanged(nameof(FraudReportSelected));
+                    var _ = GenerateFraudReport();
+                }
             }
         }
 
         public object TabControlSelectedItem
         {
-            get { return _tabControlSelectedItem; }
+            get => _tabControlSelectedItem;
             set
             {
-                SetProperty(ref _tabControlSelectedItem, value);
+                if (value != _tabControlSelectedItem)
+                {
+                    SetProperty(ref _tabControlSelectedItem, value);
+                    OnPropertyChanged(nameof(TabControlSelectedItem));
+                }
             }
         }
     }

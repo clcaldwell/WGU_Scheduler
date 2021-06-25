@@ -263,61 +263,79 @@ namespace Scheduler.ViewModel
 
         public bool AddMode
         {
-            get { return _addMode; }
+            get => _addMode;
             set
             {
-                _addMode = value;
-                OnPropertyChanged(nameof(AddMode));
+                if (value != _addMode)
+                {
+                    SetProperty(ref _addMode, value);
+                    OnPropertyChanged(nameof(AddMode));
+                }
             }
         }
 
         public bool ViewMode
         {
-            get { return _viewMode; }
+            get => _viewMode;
             set
             {
-                _viewMode = value;
-                OnPropertyChanged(nameof(ViewMode));
+                if (value != _viewMode)
+                {
+                    SetProperty(ref _viewMode, value);
+                    OnPropertyChanged(nameof(ViewMode));
+                }
             }
         }
 
         public bool EditMode
         {
-            get { return _editMode; }
+            get => _editMode;
             set
             {
-                _editMode = value;
-                OnPropertyChanged(nameof(EditMode));
+                if (value != _editMode)
+                {
+                    SetProperty(ref _editMode, value);
+                    OnPropertyChanged(nameof(EditMode));
+                }
             }
         }
 
         public bool GridDisplay
         {
-            get { return _gridDisplay; }
+            get => _gridDisplay;
             set
             {
-                _gridDisplay = value;
-                OnPropertyChanged(nameof(GridDisplay));
+                if (value != _gridDisplay)
+                {
+                    SetProperty(ref _gridDisplay, value);
+                    OnPropertyChanged(nameof(GridDisplay));
+                }
             }
         }
 
         public bool CalenderByMonthDisplay
         {
-            get { return _calenderByMonthDisplay; }
+            get => _calenderByMonthDisplay; 
             set
             {
-                _calenderByMonthDisplay = value;
-                OnPropertyChanged(nameof(CalenderByMonthDisplay));
+                if (value != _calenderByMonthDisplay)
+                {
+                    SetProperty(ref _calenderByMonthDisplay, value);
+                    OnPropertyChanged(nameof(CalenderByMonthDisplay));
+                }
             }
         }
 
         public bool CalenderByWeekDisplay
         {
-            get { return _calenderByWeekDisplay; }
+            get => _calenderByWeekDisplay;
             set
             {
-                _calenderByWeekDisplay = value;
-                OnPropertyChanged(nameof(CalenderByWeekDisplay));
+                if (value != _calenderByWeekDisplay)
+                {
+                    SetProperty(ref _calenderByWeekDisplay, value);
+                    OnPropertyChanged(nameof(CalenderByWeekDisplay));
+                }
             }
         }
 
@@ -345,8 +363,15 @@ namespace Scheduler.ViewModel
 
         public List<Appointment> AllAppointmentsLoaded
         {
-            get { return _allappointmentsloaded; }
-            set { SetProperty(ref _allappointmentsloaded, value); }
+            get => _allappointmentsloaded;
+            set 
+            {
+                if (value != _allappointmentsloaded)
+                {
+                    SetProperty(ref _allappointmentsloaded, value);
+                    OnPropertyChanged(nameof(AllAppointmentsLoaded));
+                }
+            }
         }
 
         public async void LoadAppointments()
@@ -374,19 +399,32 @@ namespace Scheduler.ViewModel
 
         public List<Appointment> WeeklyAppointments
         {
-            get { return _weeklyAppointments; }
-            set { SetProperty(ref _weeklyAppointments, value); }
+            get => _weeklyAppointments;
+            set
+            {
+                if (value != _weeklyAppointments)
+                {
+                    SetProperty(ref _weeklyAppointments, value);
+                    OnPropertyChanged(nameof(WeeklyAppointments));
+                }
+            }
         }
 
         public List<Appointment> MonthlyAppointments
         {
-            get { return _monthlyAppointments; }
-            set { SetProperty(ref _monthlyAppointments, value); }
+            get => _monthlyAppointments; set
+            {
+                if (value != _monthlyAppointments)
+                {
+                    SetProperty(ref _monthlyAppointments, value);
+                    OnPropertyChanged(nameof(MonthlyAppointments));
+                }
+            }
         }
 
         public Appointment SelectedAppointment
         {
-            get { return _selectedappointment; }
+            get => _selectedappointment;
             set
             {
                 if (value != null && value != _selectedappointment)
@@ -397,15 +435,15 @@ namespace Scheduler.ViewModel
                     SelectedCustomer = context.Customer.Find(value.CustomerId);
                     SelectedAppointment.Start = SelectedAppointment.Start.ToLocalTime();
                     SelectedAppointment.End = SelectedAppointment.End.ToLocalTime();
-                } 
-
-                    OnPropertyChanged(nameof(SelectedAppointment));
                 }
+
+                OnPropertyChanged(nameof(SelectedAppointment));
+            }
         }
 
         public Customer SelectedCustomer
         {
-            get { return _selectedcustomer; }
+            get => _selectedcustomer;
             set
             {
                 if (value != null && value != _selectedcustomer)
@@ -432,75 +470,107 @@ namespace Scheduler.ViewModel
             set { }
         }
 
-        public int CustomerIndex { get => _customerIndex; set => SetProperty(ref _customerIndex, value); }
+        public int CustomerIndex
+        { 
+            get => _customerIndex;
+            set
+            {
+                if (value != _customerIndex)
+                {
+                    SetProperty(ref _customerIndex, value);
+                    OnPropertyChanged(nameof(CustomerIndex));
+                }
+            }
+        }
 
         public object TabControlSelectedItem
         {
-            get { return _tabControlSelectedItem; }
+            get => _tabControlSelectedItem;
             set
             {
-                SetProperty(ref _tabControlSelectedItem, value);
-                OnPropertyChanged(nameof(TabControlSelectedItem));
+                if (value != _tabControlSelectedItem)
+                {
+                    SetProperty(ref _tabControlSelectedItem, value);
+                    OnPropertyChanged(nameof(TabControlSelectedItem));
+                }
             }
         }
 
         public bool GridSelected
         {
-            get { return _gridSelected; }
+            get => _gridSelected;
             set
             {
-                SetProperty(ref _gridSelected, value);
-                OnPropertyChanged(nameof(GridSelected));
+                if (value != _gridSelected)
+                {
+                    SetProperty(ref _gridSelected, value);
+                    OnPropertyChanged(nameof(GridSelected));
+                }
             }
         }
 
         public bool MonthlyCalendarSelected
         {
-            get { return _monthlyCalendarSelected; }
+            get => _monthlyCalendarSelected;
             set
             {
-                SetProperty(ref _monthlyCalendarSelected, value);
-                OnPropertyChanged(nameof(MonthlyCalendarSelected));
+                if (value != _monthlyCalendarSelected)
+                {
+                    SetProperty(ref _monthlyCalendarSelected, value);
+                    OnPropertyChanged(nameof(MonthlyCalendarSelected));
+                }
             }
         }
 
         public bool WeeklyCalendarSelected
         {
-            get { return _weeklyCalendarSelected; }
+            get => _weeklyCalendarSelected;
             set
             {
-                SetProperty(ref _weeklyCalendarSelected, value);
-                OnPropertyChanged(nameof(WeeklyCalendarSelected));
+                if (value != _weeklyCalendarSelected)
+                {
+                    SetProperty(ref _weeklyCalendarSelected, value);
+                    OnPropertyChanged(nameof(WeeklyCalendarSelected));
+                }
             }
         }
 
         public bool ModifyAppointmentSelected
         {
-            get { return _modifyAppointmentSelected; }
+            get => _modifyAppointmentSelected; 
             set
             {
-                SetProperty(ref _modifyAppointmentSelected, value);
-                OnPropertyChanged(nameof(ModifyAppointmentSelected));
+                if (value != _modifyAppointmentSelected)
+                {
+                    SetProperty(ref _modifyAppointmentSelected, value);
+                    OnPropertyChanged(nameof(ModifyAppointmentSelected));
+                }
             }
         }
 
         public string SelectedMonth
         {
-            get { return _selectedMonth; }
+            get => _selectedMonth; 
             set
             {
-                SetProperty(ref _selectedMonth, value);
-                OnPropertyChanged(nameof(SelectedMonth));
+                if (value != _selectedMonth)
+                {
+                    SetProperty(ref _selectedMonth, value);
+                    OnPropertyChanged(nameof(SelectedMonth));
+                }
             }
         }
 
         public string SelectedYear
         {
-            get { return _selectedYear; }
+            get => _selectedYear; 
             set
             {
-                SetProperty(ref _selectedYear, value);
-                OnPropertyChanged(nameof(SelectedYear));
+                if (value != _selectedYear)
+                {
+                    SetProperty(ref _selectedYear, value);
+                    OnPropertyChanged(nameof(SelectedYear));
+                }
             }
         }
 

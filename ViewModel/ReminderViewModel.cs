@@ -9,9 +9,9 @@ namespace Scheduler.ViewModel
 {
     public class ReminderViewModel : ViewModelBase
     {
-        private string _reminderText { get; set; }
+        private string _reminderText;
 
-        private Appointment _currentAppointment { get; set; }
+        private Appointment _currentAppointment;
 
         public ReminderViewModel()
         {
@@ -71,21 +71,27 @@ namespace Scheduler.ViewModel
 
         public string ReminderText
         {
-            get { return _reminderText; }
+            get => _reminderText;
             set
             {
-                _reminderText = value;
-                OnPropertyChanged(nameof(ReminderText));
+                if (value != _reminderText)
+                {
+                    SetProperty(ref _reminderText, value);
+                    OnPropertyChanged(nameof(ReminderText));
+                }
             }
         }
 
         public Appointment CurrentAppointment
         {
-            get { return _currentAppointment; }
+            get => _currentAppointment;
             set
             {
-                _currentAppointment = value;
-                OnPropertyChanged(nameof(CurrentAppointment));
+                if (value != _currentAppointment)
+                {
+                    SetProperty(ref _currentAppointment, value);
+                    OnPropertyChanged(nameof(CurrentAppointment));
+                }
             }
         }
     }

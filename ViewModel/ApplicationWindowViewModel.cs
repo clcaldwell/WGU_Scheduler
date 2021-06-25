@@ -6,10 +6,11 @@ namespace Scheduler.ViewModel
     public class ApplicationWindowViewModel : ViewModelBase
     {
         private ReminderViewModel _reminderViewModel = new ReminderViewModel();
-
         private AppointmentViewModel _appointmentViewModel = new AppointmentViewModel();
         private CustomerViewModel _customerViewModel = new CustomerViewModel();
         private ReportViewModel _reportViewModel = new ReportViewModel();
+
+        private ViewModelBase _currentViewModel;
 
         public ApplicationWindowViewModel()
         {
@@ -17,11 +18,17 @@ namespace Scheduler.ViewModel
             CurrentViewModel = _reminderViewModel;
         }
 
-        private ViewModelBase _CurrentViewModel;
         public ViewModelBase CurrentViewModel
         {
-            get { return _CurrentViewModel; }
-            set { SetProperty(ref _CurrentViewModel, value); }
+            get => _currentViewModel;
+            set
+            {
+                if (value != _currentViewModel)
+                {
+                    SetProperty(ref _currentViewModel, value);
+                    OnPropertyChanged(nameof(CurrentViewModel));
+                }
+            }
         }
 
         public RelayCommand<string> NavCommand { get; private set; }

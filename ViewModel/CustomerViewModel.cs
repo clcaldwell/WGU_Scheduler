@@ -21,9 +21,7 @@ namespace Scheduler.ViewModel
         private Country _selectedcountry;
 
         private bool _addMode = false;
-
         private bool _editMode = false;
-
         private bool _viewMode = true;
 
         enum Mode
@@ -89,7 +87,8 @@ namespace Scheduler.ViewModel
             var context = new DBContext();
             if (AddMode)
             {
-                int NextId = AllCustomers.OrderByDescending(a => a.CustomerId).FirstOrDefault().CustomerId + 1;
+                int NextId = AllCustomers.
+                    OrderByDescending(a => a.CustomerId).FirstOrDefault().CustomerId + 1;
                 MessageBox.Show("NextAppointmentId: " + NextId);
 
                 Customer NewCustomer = new Customer
@@ -147,31 +146,40 @@ namespace Scheduler.ViewModel
 
         public bool AddMode
         {
-            get { return _addMode; }
+            get => _addMode;
             set
             {
-                _addMode = value;
-                OnPropertyChanged(nameof(AddMode));
+                if (value != _addMode)
+                {
+                    SetProperty(ref _addMode, value);
+                    OnPropertyChanged(nameof(AddMode));
+                }
             }
         }
 
         public bool ViewMode
         {
-            get { return _viewMode; }
+            get => _viewMode;
             set
             {
-                _viewMode = value;
-                OnPropertyChanged(nameof(ViewMode));
+                if (value != _viewMode)
+                {
+                    SetProperty(ref _viewMode, value);
+                    OnPropertyChanged(nameof(ViewMode));
+                }
             }
         }
 
         public bool EditMode
         {
-            get { return _editMode; }
+            get => _editMode;
             set
             {
-                _editMode = value;
-                OnPropertyChanged(nameof(EditMode));
+                if (value != _editMode)
+                {
+                    SetProperty(ref _editMode, value);
+                    OnPropertyChanged(nameof(EditMode));
+                }
             }
         }
 
@@ -192,8 +200,15 @@ namespace Scheduler.ViewModel
 
         public List<Customer> AllCustomersLoaded
         {
-            get { return _allcustomersloaded; }
-            set { SetProperty(ref _allcustomersloaded, value); }
+            get => _allcustomersloaded;
+            set
+            {
+                if (value != _allcustomersloaded)
+                {
+                    SetProperty(ref _allcustomersloaded, value);
+                    OnPropertyChanged(nameof(AllCustomersLoaded));
+                }
+            }
         }
 
         public async void LoadCustomers()
@@ -204,7 +219,7 @@ namespace Scheduler.ViewModel
 
         public Customer SelectedCustomer
         {
-            get { return _selectedcustomer; }
+            get => _selectedcustomer;
             set
             {
                 if (value != null && value != _selectedcustomer)
@@ -221,7 +236,7 @@ namespace Scheduler.ViewModel
 
         public Address SelectedAddress
         {
-            get { return _selectedaddress; }
+            get => _selectedaddress;
             set
             {
                 if (value != null && value != _selectedaddress)
@@ -238,7 +253,7 @@ namespace Scheduler.ViewModel
 
         public City SelectedCity
         {
-            get { return _selectedcity; }
+            get => _selectedcity;
             set
             {
                 if (value != null && value != _selectedcity)
@@ -255,7 +270,7 @@ namespace Scheduler.ViewModel
 
         public Country SelectedCountry
         {
-            get { return _selectedcountry; }
+            get => _selectedcountry;
             set
             {
                 if (value != null && value != _selectedcountry)
