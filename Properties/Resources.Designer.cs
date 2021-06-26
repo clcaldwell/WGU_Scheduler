@@ -124,6 +124,16 @@ namespace Scheduler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] passwordFont {
+            get {
+                object obj = ResourceManager.GetObject("passwordFont", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scheduling Login.
         /// </summary>
         public static string Title {

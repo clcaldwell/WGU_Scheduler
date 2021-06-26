@@ -7,6 +7,7 @@
     xmlns:p = "clr-namespace:Scheduler.Properties"
     xmlns:local="clr-namespace:Scheduler"
     xmlns:ViewModel="clr-namespace:Scheduler.ViewModel"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen" Height="450" Width="400" >
 
@@ -17,7 +18,10 @@
             <TextBox Name="userNameBox" Text="{Binding UserName}" Width="175" HorizontalAlignment="Center" Height="20" />
             <TextBox Width="0" HorizontalAlignment="Center" Height="20" Visibility="Hidden" />
             <TextBlock Name="passwordText" Text="{x:Static p:Resources.Password}" HorizontalAlignment="Center"/>
-            <TextBox Name="passwordBox" Text="{Binding Password}" Width="175" HorizontalAlignment="Center" Height="20"/>
+            <TextBox Name="passwordBox" Text="{Binding Password}"
+                FontFamily="pack://application:,,,/Resources/Font/#password"
+                Width="175" HorizontalAlignment="Center" Height="20"/>
+
         </StackPanel>
         <Button Name="loginButton" Content="{x:Static p:Resources.Login}" Height="30" Width="50" Margin="170,204,160,175" Background="LightGreen"
                 Command="{Binding LoginCommand}"/>

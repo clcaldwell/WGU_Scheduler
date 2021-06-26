@@ -97,7 +97,7 @@ namespace Scheduler.ViewModel
         }
         
         public RelayCommand<string> LoginCommand { get; private set; }
-        
+
         public LoginWindowViewModel()
         {
             LoginCommand = new RelayCommand<string>(TryLogin);

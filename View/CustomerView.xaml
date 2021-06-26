@@ -85,6 +85,8 @@
                                 <DataGridTextColumn Header="Last Update" Binding="{Binding Path=LastUpdate, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Last Update by" Binding="{Binding Path=LastUpdateBy, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Active" Binding="{Binding Path=Active, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="Address" Binding="{Binding Path=Address.Address1, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="Address" Binding="{Binding Path=Address.City.City1, Mode=TwoWay}"/>
                             </DataGrid.Columns>
                         </DataGrid>
                         <StackPanel Orientation="Horizontal">
@@ -129,7 +131,7 @@
                         </TextBox>
                         <TextBox Name="addressBox" IsEnabled="{Binding EditMode, Mode=OneWay}">
                             <TextBox.Text>
-                                <Binding Path="SelectedAddress.Address1"
+                                <Binding Path="SelectedCustomer.Address.Address1"
                              Mode="TwoWay"
                              UpdateSourceTrigger="PropertyChanged"
                              NotifyOnValidationError="True" >
@@ -139,10 +141,10 @@
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
-                        <TextBox Name="addressBox2" Text="{Binding SelectedAddress.Address2, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+                        <TextBox Name="addressBox2" Text="{Binding SelectedCustomer.Address.Address2, Mode=TwoWay}" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
                         <TextBox Name="cityBox" IsEnabled="{Binding EditMode, Mode=OneWay}" >
                             <TextBox.Text>
-                                <Binding Path="SelectedCity.City1"
+                                <Binding Path="SelectedCustomer.Address.City.City1"
                              Mode="TwoWay"
                              UpdateSourceTrigger="PropertyChanged"
                              NotifyOnValidationError="True" >
@@ -154,7 +156,7 @@
                         </TextBox>
                         <TextBox Name="countryBox" IsEnabled="{Binding EditMode, Mode=OneWay}" >
                             <TextBox.Text>
-                                <Binding Path="SelectedCountry.Country1"
+                                <Binding Path="SelectedCustomer.Address.City.Country.Country1"
                              Mode="TwoWay"
                              UpdateSourceTrigger="PropertyChanged"
                              NotifyOnValidationError="True" >
@@ -166,7 +168,7 @@
                         </TextBox>
                         <TextBox Name="zipBox" IsEnabled="{Binding EditMode, Mode=OneWay}" >
                             <TextBox.Text>
-                                <Binding Path="SelectedAddress.PostalCode"
+                                <Binding Path="SelectedCustomer.Address.PostalCode"
                              Mode="TwoWay"
                              UpdateSourceTrigger="PropertyChanged"
                              NotifyOnValidationError="True" >
@@ -179,7 +181,7 @@
                         </TextBox>
                         <TextBox Name="phoneBox" IsEnabled="{Binding EditMode, Mode=OneWay}" >
                             <TextBox.Text>
-                                <Binding Path="SelectedAddress.Phone"
+                                <Binding Path="SelectedCustomer.Address.Phone"
                              Mode="TwoWay"
                              UpdateSourceTrigger="PropertyChanged"
                              NotifyOnValidationError="True" >
@@ -244,6 +246,142 @@
                 </WrapPanel>
             </TabItem>
             <TabItem Header="Address" FontSize="20" IsSelected="{Binding AddressTabSelected}">
+                <WrapPanel Grid.Column="2" Grid.ColumnSpan="8" Grid.Row="3">
+
+                    <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                        <StackPanel Margin="25">
+                            <TextBlock Text="Addresses"/>
+                            <ComboBox Name="AddressListView" FontSize="12"
+                                  Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
+                                  ItemsSource="{Binding AllAddresses}"
+                                  SelectedItem="{Binding SelectedAddressItem, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel>
+                                            <TextBlock Text="{Binding Path=Address1}"/>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Margin="25">
+                            <TextBlock Text="Cities"/>
+                            <ComboBox Name="CityListView" FontSize="12"
+                                  Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
+                                  ItemsSource="{Binding AllCities}"
+                                  SelectedItem="{Binding SelectedCityItem, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel>
+                                            <TextBlock Text="{Binding Path=City1}"/>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Margin="25">
+                            <TextBlock Text="Countries" />
+                            <ComboBox Name="CountryListView" FontSize="12"
+                                  Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" 
+                                  ItemsSource="{Binding AllCountries}"
+                                  SelectedItem="{Binding SelectedCountryItem, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel>
+                                            <TextBlock Text="{Binding Path=Country1}"/>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="4" Grid.Row="2" Grid.RowSpan="3" Margin=" 30,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="addButton_country" Content="Add Country" Command="{Binding AddCountryCommand}" CommandParameter="{Binding SelectedCountryItem}"
+                                    Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}" MinWidth="140"/>
+                                <Button Name="editButton_country" Content="Edit Country" Command="{Binding EditCountryCommand}" CommandParameter="{Binding SelectedCountryItem}"
+                                    Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}" MinWidth="140"/>
+                                <Button Name="deleteButton_country" Content="Delete Country" Command="{Binding DeleteCountryCommand}" CommandParameter="{Binding SelectedCountryItem}"
+                                    Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}" MinWidth="140"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="addButton_city" Content="Add City" Command="{Binding AddCityCommand}" CommandParameter="{Binding SelectedCityItem}"
+                                    Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}" MinWidth="140"/>
+                                <Button Name="editButton_city" Content="Edit City" Command="{Binding EditCityCommand}" CommandParameter="{Binding SelectedCityItem}"
+                                    Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}" MinWidth="140"/>
+                                <Button Name="deleteButton_city" Content="Delete City" Command="{Binding DeleteCityCommand}" CommandParameter="{Binding SelectedCityItem}"
+                                    Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}" MinWidth="140"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="addButton_address" Content="Add Address" Command="{Binding AddAddressCommand}" CommandParameter="{Binding SelectedAddressItem}"
+                                    Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}" MinWidth="140"/>
+                                <Button Name="editButton_address" Content="Edit Address" Command="{Binding EditAddressCommand}" CommandParameter="{Binding SelectedAddressItem}"
+                                    Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}" MinWidth="140"/>
+                                <Button Name="deleteButton_address" Content="Delete Address" Command="{Binding DeleteAddressCommand}" CommandParameter="{Binding SelectedAddressItem}"
+                                    Margin="5" IsEnabled="{Binding ViewMode, Mode=OneWay}" MinWidth="140"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Margin="45"/>
+                    <StackPanel Grid.Column="3" Grid.Row="4" Margin="5">
+                        <TextBox Text="Street" IsEnabled="False"/>
+                        <TextBox Text="Apt" IsEnabled="False"/>
+                        <TextBox Text="City" IsEnabled="False"/>
+                        <TextBox Text="Country" IsEnabled="False"/>
+                        <TextBox Text="Zip" IsEnabled="False"/>
+                    </StackPanel>
+
+                         <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="5">
+                            <Button Name="saveButton_address" Content="Save" Command="{Binding SaveCustomerCommand}"
+                    CommandParameter="{Binding SelectedCustomer}" Width="40" Height="25" Margin="5">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource  {x:Type Button}}">
+                                        <Setter Property="IsEnabled" Value="false" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=nameBox, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding ElementName=addressBox, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding ElementName=addressBox2, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding ElementName=cityBox, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding ElementName=countryBox, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding ElementName=zipBox, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding ElementName=phoneBox, Path=(Validation.HasError)}" Value="false" />
+                                                    <Condition Binding="{Binding Path=EditMode}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="true" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Name="cancelButton_address" Content="Cancel" Command="{Binding CancelCustomerCommand}"
+                                Width="40" Height="25" Margin="5" IsEnabled="{Binding EditMode, Mode=OneWay}"/>
+                        </StackPanel>
+
+                    <ComboBox ItemsSource="{Binding AllAddresses}" FontSize="10" Margin="10" MaxHeight="50">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Address1}"/>
+                                    <TextBlock Text="{Binding Path=City}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <ListBox ItemsSource="{Binding AllAddresses}" FontSize="10" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Address1}"/>
+                                    <TextBlock Text="{Binding Path=City}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </WrapPanel>
             </TabItem>
         </TabControl>
 

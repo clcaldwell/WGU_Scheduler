@@ -20,6 +20,9 @@ namespace Scheduler.ViewModel
         private Address _selectedaddress;
         private City _selectedcity;
         private Country _selectedcountry;
+        private Country _selectedCountryItem;
+        private City _selectedCityItem;
+        private Address _selectedAddressItem;
 
         private bool _addMode = false;
         private bool _editMode = false;
@@ -105,8 +108,8 @@ namespace Scheduler.ViewModel
                     CreatedBy = customer.CreatedBy,
                     LastUpdate = DateTime.Now.ToUniversalTime(),
                     LastUpdateBy = customer.LastUpdateBy
-                }; 
 
+                }; 
                 context.Add(NewCustomer);
             }
             else
@@ -114,9 +117,9 @@ namespace Scheduler.ViewModel
                 //customer.LastUpdate = DateTime.Now.ToUniversalTime();
 
                 context.Update(customer);
-                context.Update(SelectedAddress);
-                context.Update(SelectedCity);
-                context.Update(SelectedCountry);
+                //context.Update(SelectedAddress);
+                //context.Update(SelectedCity);
+                //context.Update(SelectedCountry);
             }
 
             context.SaveChanges();
@@ -220,6 +223,24 @@ namespace Scheduler.ViewModel
             AllCustomersLoaded = await context.Customer.ToListAsync();
         }
 
+        //public async void LoadAddresses()
+        //{
+            //var context = new DBContext();
+            //AllAddresses = await context.Address.ToListAsync();
+        //}
+
+        //public async void LoadCities()
+        //{
+            //var context = new DBContext();
+            //AllCities = await context.City.ToListAsync();
+        //}
+
+        //public async void LoadCountries()
+        //{
+            //var context = new DBContext();
+            //AllCountries = await (IEnumerable<Country>)context.Country.ToListAsync();
+        //}
+
         public Customer SelectedCustomer
         {
             get => _selectedcustomer;
@@ -227,10 +248,14 @@ namespace Scheduler.ViewModel
             {
                 if (value != null && value != _selectedcustomer)
                 {
+                    var context = new DBContext();
+                    value.Address = context.Address.Find(value.AddressId);
+                    value.Address.City = context.City.Find(value.Address.CityId);
+                    value.Address.City.Country = context.Country.Find(value.Address.City.CountryId);
+
                     SetProperty(ref _selectedcustomer, value);
 
-                    var context = new DBContext();
-                    SelectedAddress = context.Address.Find(value.AddressId);
+                    //SelectedAddress = context.Address.Find(value.AddressId);
 
                     OnPropertyChanged();
                 }
@@ -244,9 +269,12 @@ namespace Scheduler.ViewModel
             {
                 if (value != null && value != _selectedaddress)
                 {
+                    var context = new DBContext();
+                    value.City = context.City.Find(value.CityId);
+                    value.City.Country = context.Country.Find(value.City.CountryId);
+
                     SetProperty(ref _selectedaddress, value);
 
-                    var context = new DBContext();
                     SelectedCity = context.City.Find(value.CityId);
 
                     OnPropertyChanged();
@@ -296,6 +324,76 @@ namespace Scheduler.ViewModel
                 var context = new DBContext();
                 context.Address.UpdateRange(value.ToList());
                 context.SaveChanges();
+            }
+        }
+
+        public ObservableCollection<City> AllCities
+        {
+            get
+            {
+                var context = new DBContext();
+                return new ObservableCollection<City>(context.City.ToList());
+            }
+            set
+            {
+                var context = new DBContext();
+                context.City.UpdateRange(value.ToList());
+                context.SaveChanges();
+            }
+        }
+
+        public ObservableCollection<Country> AllCountries
+
+        {
+            get
+            {
+                var context = new DBContext();
+                return new ObservableCollection<Country>(context.Country.ToList());
+            }
+            set
+            {
+                var context = new DBContext();
+                context.Country.UpdateRange(value.ToList());
+                context.SaveChanges();
+            }
+        }
+
+        public Country SelectedCountryItem
+        {
+            get => _selectedCountryItem;
+            set
+            {
+                if (value != null && value != _selectedCountryItem)
+                {
+                    SetProperty(ref _selectedCountryItem, value);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public City SelectedCityItem
+        {
+            get => _selectedCityItem;
+            set
+            {
+                if (value != null && value != _selectedCityItem)
+                {
+                    SetProperty(ref _selectedCityItem, value);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public Address SelectedAddressItem
+        {
+            get => _selectedAddressItem;
+            set
+            {
+                if (value != null && value != _selectedAddressItem)
+                {
+                    SetProperty(ref _selectedAddressItem, value);
+                    OnPropertyChanged();
+                }
             }
         }
 
