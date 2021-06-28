@@ -104,6 +104,10 @@ namespace Scheduler.ViewModel
         private void OnAddButton(Appointment appointment)
         {
             SetMode(Mode.Add);
+            if (appointment == null)
+            {
+                SelectedAppointment = AllAppointments.FirstOrDefault();
+            }
         }
 
         private void OnEditButton(Appointment appointment)
@@ -147,7 +151,7 @@ namespace Scheduler.ViewModel
                 int NextId = AllAppointments.OrderByDescending(a => a.AppointmentId).FirstOrDefault().AppointmentId + 1;
                 Appointment NewAppointment = new Appointment
                 {
-                    AppointmentId = NextId,
+                    //AppointmentId = NextId,
                     CustomerId = appointment.CustomerId,
                     UserId = appointment.UserId,
                     Title = appointment.Title,
@@ -156,8 +160,8 @@ namespace Scheduler.ViewModel
                     Contact = appointment.Contact,
                     Type = appointment.Type,
                     Url = appointment.Url,
-                    Start = appointment.Start,
-                    End = appointment.End,
+                    Start = appointment.Start.ToUniversalTime(),
+                    End = appointment.End.ToUniversalTime(),
                     CreateDate = appointment.CreateDate.ToUniversalTime(),
                     CreatedBy = appointment.CreatedBy,
                     LastUpdate = appointment.LastUpdate.ToUniversalTime(),
