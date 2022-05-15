@@ -1,17 +1,24 @@
-**Generated Files**\
-The following files were automatically generated via Entity Framework scaffolding. EF scaffolding is where Entity Framework connects to the specified DB and creates C# classes matching the available fields in the database.
-Generated Scaffold Files:\
-`/Model/DBEntities/Address.cs`\
-`/Model/DBEntities/Appointment.cs`\
-`/Model/DBEntities/City.cs`\
-`/Model/DBEntities/Country.cs`\
-`/Model/DBEntities/Customer.cs`\
-`/Model/DBEntities/User.cs`\
-`/Services/DBContext.cs`
+# WGU Scheduler
 
-*Reference:* https://docs.microsoft.com/en-us/ef/core/cli/dotnet
+This project is a mockup of a desktop business scheduling application. This project is written in C#, targeting WPF, and using the MVVM pattern. This was course work for my degree program at Western Governors University (WGU). 
 
-**gitignore Template File**\
-The `.gitignore` file was taken from a standard template available for Visual Studio projects available from GitHub. This has no effect on the project itself, it simply makes it easier to manage the project with git, by ignoring Visual Studio artifacts that do not need to be indexed.
+To run and compile this, you will need Visual Studio. I have tested against Visual Studio 2019 and Visual Studio 2022, I do not know if this will compile against older versions.
 
-*Reference:* https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
+## Functionality
+
+- Automatically determine user's region/language, and output error messages in that language.
+- Add, update, and delete customer records in a database.
+- Add, update, and delete appointments in a database (connected to the customer).
+- Toggle appointment calendar between a monthly and a weekly view.
+- Automatically adjust appointment times based on user's time zone and DST.
+- Exception controls to prevent:
+    - scheduling an appointment outside business hours
+    - scheduling overlapping appointments
+    - entering nonexistent or invalid customer data
+    - entering an incorrect username and password
+- Trigger alerts before appointments.
+- Generate reports:
+    - number of appointment types by month
+    - the schedule for each  consultant
+    - a potential fraud report
+- Log user activity
