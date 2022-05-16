@@ -1,6 +1,6 @@
 ﻿namespace Scheduler.Model
 {
-    class CustomerModel
+    internal class CustomerModel
     {
     }
 }

@@ -1,8 +1,8 @@
-﻿using System.Globalization;
+﻿using Scheduler.View;
+
+using System.Globalization;
 using System.Threading;
 using System.Windows;
-
-using Scheduler.View;
 
 namespace Scheduler
 {

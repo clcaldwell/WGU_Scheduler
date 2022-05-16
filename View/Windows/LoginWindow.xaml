@@ -25,5 +25,7 @@
         </StackPanel>
         <Button Name="loginButton" Content="{x:Static p:Resources.Login}" Height="30" Width="50" Margin="170,204,160,175" Background="LightGreen"
                 Command="{Binding LoginCommand}"/>
+        <Button Name="newUserButton" Content="{x:Static p:Resources.CreateNewUser}" Margin="130,273,120,146" Background="LightGreen"
+                Command="{Binding CreateNewUserCommand}"/>
     </Grid>
 </Window>

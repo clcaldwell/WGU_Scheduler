@@ -14,15 +14,14 @@ namespace Scheduler.Model.DBEntities
             Appointment = new HashSet<Appointment>();
         }
 
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
         public sbyte Active { get; set; }
+        public virtual ICollection<Appointment> Appointment { get; set; }
         public DateTime CreateDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime LastUpdate { get; set; }
         public string LastUpdateBy { get; set; }
-
-        public virtual ICollection<Appointment> Appointment { get; set; }
+        public string Password { get; set; }
+        public int UserId { get; set; }
+        public string UserName { get; set; }
     }
 }

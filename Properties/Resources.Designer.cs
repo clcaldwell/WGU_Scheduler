@@ -61,6 +61,15 @@ namespace Scheduler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create user and Login.
+        /// </summary>
+        public static string CreateNewUser {
+            get {
+                return ResourceManager.GetString("CreateNewUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         public static string Exit {
